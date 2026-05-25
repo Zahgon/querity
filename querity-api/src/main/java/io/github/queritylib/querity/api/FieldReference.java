@@ -86,10 +86,11 @@ import lombok.extern.jackson.Jacksonized;
 @Builder
 @Jacksonized
 public class FieldReference {
+
     @NonNull
     private final String fieldName;
 
     public static FieldReference of(String fieldName) {
-        return new FieldReference(fieldName);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

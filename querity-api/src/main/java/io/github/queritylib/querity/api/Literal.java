@@ -46,21 +46,11 @@ public class Literal implements FunctionArgument {
      * @return a new Literal
      */
     public static Literal of(Object value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Literal value cannot be null");
-        }
-        if (!(value instanceof String || value instanceof Number || value instanceof Boolean)) {
-            throw new IllegalArgumentException(
-                "Literal value must be String, Number, or Boolean, but was: " + value.getClass().getName());
-        }
-        return new Literal(value);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public String toString() {
-        if (value instanceof String) {
-            return "\"" + value + "\"";
-        }
-        return String.valueOf(value);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

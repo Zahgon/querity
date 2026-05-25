@@ -7,7 +7,6 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Selection;
 import jakarta.persistence.metamodel.Metamodel;
-
 import java.util.List;
 
 /**
@@ -15,32 +14,29 @@ import java.util.List;
  */
 public interface JpaSelect {
 
-  /**
-   * Convert this select to a list of JPA Selections.
-   *
-   * @param metamodel the JPA metamodel
-   * @param root      the root of the query
-   * @param cq        the criteria query
-   * @param cb        the criteria builder
-   * @return a list of JPA selections
-   */
-  @SuppressWarnings("java:S1452")
-  List<Selection<?>> toSelections(Metamodel metamodel, Root<?> root, CriteriaQuery<?> cq, CriteriaBuilder cb);
+    /**
+     * Convert this select to a list of JPA Selections.
+     *
+     * @param metamodel the JPA metamodel
+     * @param root      the root of the query
+     * @param cq        the criteria query
+     * @param cb        the criteria builder
+     * @return a list of JPA selections
+     */
+    @SuppressWarnings("java:S1452")
+    List<Selection<?>> toSelections(Metamodel metamodel, Root<?> root, CriteriaQuery<?> cq, CriteriaBuilder cb);
 
-  /**
-   * Get the property names for this select.
-   *
-   * @return list of property names
-   */
-  List<String> getPropertyNames();
+    /**
+     * Get the property names for this select.
+     *
+     * @return list of property names
+     */
+    List<String> getPropertyNames();
 
-  /**
-   * Create a JpaSelect from an API Select.
-   */
-  static JpaSelect of(Select select) {
-    if (select instanceof SimpleSelect simpleSelect) {
-      return new JpaSimpleSelect(simpleSelect);
+    /**
+     * Create a JpaSelect from an API Select.
+     */
+    static JpaSelect of(Select select) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-    throw new IllegalArgumentException("Unsupported select type: " + select.getClass().getSimpleName());
-  }
 }

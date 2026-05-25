@@ -2,7 +2,6 @@ package io.github.queritylib.querity.api;
 
 import lombok.*;
 import lombok.extern.jackson.Jacksonized;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -78,23 +77,15 @@ public class FunctionCall implements PropertyExpression {
 
     private void validate() {
         if (function.isNullary() && !arguments.isEmpty()) {
-            throw new IllegalArgumentException(
-                    String.format("Function %s does not accept any arguments, but %d were provided",
-                            function, arguments.size()));
+            throw new IllegalArgumentException(String.format("Function %s does not accept any arguments, but %d were provided", function, arguments.size()));
         }
-
         if (!function.isVariadic() && !function.isNullary() && arguments.size() != function.getArgumentCount()) {
-            throw new IllegalArgumentException(
-                    String.format("Function %s requires %d argument(s), but %d were provided",
-                            function, function.getArgumentCount(), arguments.size()));
+            throw new IllegalArgumentException(String.format("Function %s requires %d argument(s), but %d were provided", function, function.getArgumentCount(), arguments.size()));
         }
-
         if (function.isVariadic()) {
             int minArgs = function.getMinimumArguments();
             if (arguments.size() < minArgs) {
-                throw new IllegalArgumentException(
-                        String.format("Function %s requires at least %d argument(s), but %d were provided",
-                                function, minArgs, arguments.size()));
+                throw new IllegalArgumentException(String.format("Function %s requires at least %d argument(s), but %d were provided", function, minArgs, arguments.size()));
             }
         }
     }
@@ -107,10 +98,7 @@ public class FunctionCall implements PropertyExpression {
      * @return a new FunctionCall
      */
     public static FunctionCall of(Function function, FunctionArgument... arguments) {
-        return FunctionCall.builder()
-                .function(function)
-                .arguments(List.of(arguments))
-                .build();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -120,11 +108,7 @@ public class FunctionCall implements PropertyExpression {
      * @return a new FunctionCall with the alias set
      */
     public FunctionCall as(String alias) {
-        return FunctionCall.builder()
-                .function(this.function)
-                .arguments(this.arguments)
-                .alias(alias)
-                .build();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -133,19 +117,12 @@ public class FunctionCall implements PropertyExpression {
      * @return true if an alias is set
      */
     public boolean hasAlias() {
-        return alias != null && !alias.isEmpty();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public String toExpressionString() {
-        if (function.isNullary()) {
-            return function.name();
-        }
-        String argsString = arguments.stream()
-                .map(this::argumentToString)
-                .collect(Collectors.joining(", "));
-        String expression = function.name() + "(" + argsString + ")";
-        return hasAlias() ? expression + " AS " + alias : expression;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     private String argumentToString(FunctionArgument arg) {

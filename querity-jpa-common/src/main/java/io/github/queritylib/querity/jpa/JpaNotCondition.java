@@ -9,17 +9,16 @@ import jakarta.persistence.metamodel.Metamodel;
 import lombok.experimental.Delegate;
 
 class JpaNotCondition extends JpaCondition {
-  @Delegate
-  private final NotCondition notCondition;
 
-  public JpaNotCondition(NotCondition notCondition) {
-    this.notCondition = notCondition;
-  }
+    @Delegate
+    private final NotCondition notCondition;
 
-  @Override
-  public <T> Predicate toPredicate(Class<T> entityClass, Metamodel metamodel, Root<T> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
-    return cb.not(
-        cb.and( // work-around to make double-negation work (regression on Hibernate 6)
-            JpaCondition.of(getCondition()).toPredicate(entityClass, metamodel, root, cq, cb)));
-  }
+    public JpaNotCondition(NotCondition notCondition) {
+        this.notCondition = notCondition;
+    }
+
+    @Override
+    public <T> Predicate toPredicate(Class<T> entityClass, Metamodel metamodel, Root<T> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

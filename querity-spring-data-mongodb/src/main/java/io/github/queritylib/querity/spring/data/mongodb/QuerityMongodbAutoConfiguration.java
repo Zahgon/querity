@@ -9,8 +9,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 @AutoConfiguration
 @ConditionalOnProperty(prefix = "querity.autoconfigure", name = "enabled", matchIfMissing = true)
 public class QuerityMongodbAutoConfiguration {
-  @Bean
-  public Querity querity(MongoTemplate mongoTemplate) {
-    return new QuerityMongodbImpl(mongoTemplate);
-  }
+
+    @Bean
+    public Querity querity(MongoTemplate mongoTemplate) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

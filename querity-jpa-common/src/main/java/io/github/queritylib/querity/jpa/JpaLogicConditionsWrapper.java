@@ -10,28 +10,24 @@ import jakarta.persistence.metamodel.Metamodel;
 import lombok.experimental.Delegate;
 
 abstract class JpaLogicConditionsWrapper extends JpaCondition {
-  @Delegate
-  private final LogicConditionsWrapper conditionsWrapper;
 
-  protected JpaLogicConditionsWrapper(LogicConditionsWrapper conditionsWrapper) {
-    this.conditionsWrapper = conditionsWrapper;
-  }
+    @Delegate
+    private final LogicConditionsWrapper conditionsWrapper;
 
-  @Override
-  public <T> Predicate toPredicate(Class<T> entityClass, Metamodel metamodel, Root<T> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
-    return getLogicPredicate(getConditionPredicates(entityClass, metamodel, root, cq, cb), cb);
-  }
+    protected JpaLogicConditionsWrapper(LogicConditionsWrapper conditionsWrapper) {
+        this.conditionsWrapper = conditionsWrapper;
+    }
 
-  private <T> Predicate[] getConditionPredicates(Class<T> entityClass, Metamodel metamodel, Root<T> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
-    return getConditions().stream()
-        .map(JpaCondition::of)
-        .map(c -> c.toPredicate(entityClass, metamodel, root, cq, cb))
-        .toArray(Predicate[]::new);
-  }
+    @Override
+    public <T> Predicate toPredicate(Class<T> entityClass, Metamodel metamodel, Root<T> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 
-  private Predicate getLogicPredicate(Predicate[] conditionPredicates, CriteriaBuilder cb) {
-    return getLogic().equals(LogicOperator.AND) ?
-        cb.and(conditionPredicates) :
-        cb.or(conditionPredicates);
-  }
+    private <T> Predicate[] getConditionPredicates(Class<T> entityClass, Metamodel metamodel, Root<T> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+        return getConditions().stream().map(JpaCondition::of).map(c -> c.toPredicate(entityClass, metamodel, root, cq, cb)).toArray(Predicate[]::new);
+    }
+
+    private Predicate getLogicPredicate(Predicate[] conditionPredicates, CriteriaBuilder cb) {
+        return getLogic().equals(LogicOperator.AND) ? cb.and(conditionPredicates) : cb.or(conditionPredicates);
+    }
 }

@@ -9,35 +9,28 @@ import io.github.queritylib.querity.common.mapping.condition.ConditionMapperFact
 
 public class PropertyNameMappingPreprocessor implements QueryPreprocessor {
 
-  private final PropertyNameMapper propertyNameMapper;
+    private final PropertyNameMapper propertyNameMapper;
 
-  public PropertyNameMappingPreprocessor(PropertyNameMapper propertyNameMapper) {
-    this.propertyNameMapper = propertyNameMapper;
-  }
-
-  @Override
-  public Query preprocess(Query query) {
-    return query.toBuilder()
-        .filter(mapCondition(query.getFilter()))
-        .sort(query.getSort().stream()
-            .map(this::mapSort)
-            .toArray(Sort[]::new))
-        .build();
-  }
-
-  private Condition mapCondition(Condition condition) {
-    if (condition == null) return null;
-    return ConditionMapperFactory.getConditionMapper(condition)
-        .mapCondition(condition, propertyNameMapper);
-  }
-
-  private Sort mapSort(Sort sort) {
-    if (sort instanceof SimpleSort simpleSort) {
-      return simpleSort.toBuilder()
-          .propertyName(propertyNameMapper.mapPropertyName(simpleSort.getPropertyName()))
-          .build();
+    public PropertyNameMappingPreprocessor(PropertyNameMapper propertyNameMapper) {
+        this.propertyNameMapper = propertyNameMapper;
     }
-    // NativeSortWrapper and other Sort implementations are returned as-is
-    return sort;
-  }
+
+    @Override
+    public Query preprocess(Query query) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    private Condition mapCondition(Condition condition) {
+        if (condition == null)
+            return null;
+        return ConditionMapperFactory.getConditionMapper(condition).mapCondition(condition, propertyNameMapper);
+    }
+
+    private Sort mapSort(Sort sort) {
+        if (sort instanceof SimpleSort simpleSort) {
+            return simpleSort.toBuilder().propertyName(propertyNameMapper.mapPropertyName(simpleSort.getPropertyName())).build();
+        }
+        // NativeSortWrapper and other Sort implementations are returned as-is
+        return sort;
+    }
 }

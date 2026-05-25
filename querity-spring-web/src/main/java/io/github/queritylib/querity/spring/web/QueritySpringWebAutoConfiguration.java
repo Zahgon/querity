@@ -14,14 +14,14 @@ import org.springframework.context.annotation.Import;
 @EnableAspectJAutoProxy
 @ConditionalOnProperty(prefix = "querity.web.autoconfigure", name = "enabled", matchIfMissing = true)
 public class QueritySpringWebAutoConfiguration {
-  @Bean
-  public JacksonModule querityJacksonModule() {
-    return new QuerityModule();
-  }
 
-  @Bean
-  QuerityPreprocessorAspect querityPreprocessorAspect(
-      ApplicationContext applicationContext) {
-    return new QuerityPreprocessorAspect(applicationContext);
-  }
+    @Bean
+    public JacksonModule querityJacksonModule() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    @Bean
+    QuerityPreprocessorAspect querityPreprocessorAspect(ApplicationContext applicationContext) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

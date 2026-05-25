@@ -5,15 +5,16 @@ import lombok.experimental.Delegate;
 import org.springframework.data.elasticsearch.core.query.Criteria;
 
 class ElasticsearchNotCondition extends ElasticsearchCondition {
-  @Delegate
-  private final NotCondition notCondition;
 
-  public ElasticsearchNotCondition(NotCondition notCondition) {
-    this.notCondition = notCondition;
-  }
+    @Delegate
+    private final NotCondition notCondition;
 
-  @Override
-  public <T> Criteria toCriteria(Class<T> entityClass, boolean negate) {
-    return ElasticsearchCondition.of(getCondition()).toCriteria(entityClass, !negate);
-  }
+    public ElasticsearchNotCondition(NotCondition notCondition) {
+        this.notCondition = notCondition;
+    }
+
+    @Override
+    public <T> Criteria toCriteria(Class<T> entityClass, boolean negate) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

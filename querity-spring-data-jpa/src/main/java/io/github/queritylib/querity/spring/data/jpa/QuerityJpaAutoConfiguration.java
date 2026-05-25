@@ -10,8 +10,9 @@ import org.springframework.context.annotation.Bean;
 @AutoConfiguration
 @ConditionalOnProperty(prefix = "querity.autoconfigure", name = "enabled", matchIfMissing = true)
 public class QuerityJpaAutoConfiguration {
-  @Bean
-  public Querity querity(EntityManager entityManager) {
-    return new QuerityJpaImpl(entityManager);
-  }
+
+    @Bean
+    public Querity querity(EntityManager entityManager) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

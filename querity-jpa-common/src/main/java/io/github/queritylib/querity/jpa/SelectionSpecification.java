@@ -15,23 +15,24 @@ import jakarta.persistence.criteria.Selection;
  */
 @FunctionalInterface
 public interface SelectionSpecification<T> {
-  /**
-   * Creates a Selection for the given root and criteria builder.
-   *
-   * @param root the root of the query
-   * @param cb   the criteria builder
-   * @return the Selection to include in the projection
-   */
-  @SuppressWarnings("java:S1452")
-  Selection<?> toSelection(Root<T> root, CriteriaBuilder cb);
 
-  /**
-   * Returns the alias for this selection.
-   * Override this method to provide a custom alias for the projected field.
-   *
-   * @return the alias, or null to use the default
-   */
-  default String getAlias() {
-    return null;
-  }
+    /**
+     * Creates a Selection for the given root and criteria builder.
+     *
+     * @param root the root of the query
+     * @param cb   the criteria builder
+     * @return the Selection to include in the projection
+     */
+    @SuppressWarnings("java:S1452")
+    Selection<?> toSelection(Root<T> root, CriteriaBuilder cb);
+
+    /**
+     * Returns the alias for this selection.
+     * Override this method to provide a custom alias for the projected field.
+     *
+     * @return the alias, or null to use the default
+     */
+    default String getAlias() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

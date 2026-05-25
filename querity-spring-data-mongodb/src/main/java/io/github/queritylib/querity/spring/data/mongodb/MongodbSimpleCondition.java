@@ -5,15 +5,16 @@ import lombok.experimental.Delegate;
 import org.springframework.data.mongodb.core.query.Criteria;
 
 class MongodbSimpleCondition extends MongodbCondition {
-  @Delegate
-  private final SimpleCondition condition;
 
-  MongodbSimpleCondition(SimpleCondition condition) {
-    this.condition = condition;
-  }
+    @Delegate
+    private final SimpleCondition condition;
 
-  @Override
-  public <T> Criteria toCriteria(Class<T> entityClass, boolean negate) {
-    return MongodbOperatorMapper.getCriteria(entityClass, condition, negate);
-  }
+    MongodbSimpleCondition(SimpleCondition condition) {
+        this.condition = condition;
+    }
+
+    @Override
+    public <T> Criteria toCriteria(Class<T> entityClass, boolean negate) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

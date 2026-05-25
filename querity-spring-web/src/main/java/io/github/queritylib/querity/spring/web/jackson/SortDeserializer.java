@@ -8,42 +8,37 @@ import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.deser.std.StdDeserializer;
-
 import static io.github.queritylib.querity.spring.web.jackson.JsonFields.DIRECTION;
 import static io.github.queritylib.querity.spring.web.jackson.JsonFields.PROPERTY_NAME;
 
 public class SortDeserializer extends StdDeserializer<Sort> {
 
-  protected SortDeserializer(JavaType valueType) {
-    super(valueType);
-  }
-
-  @Override
-  public Sort deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws JacksonException {
-    JsonNode root = jsonParser.readValueAsTree();
-    return parseSort(root);
-  }
-
-  private static Sort parseSort(JsonNode jsonNode) {
-    if (isSimpleSort(jsonNode)) {
-      return parseSimpleSort(jsonNode);
-    }
-    throw new IllegalArgumentException("Unknown sort type: " + jsonNode);
-  }
-
-  private static boolean isSimpleSort(JsonNode jsonNode) {
-    return jsonNode.hasNonNull(PROPERTY_NAME);
-  }
-
-  private static SimpleSort parseSimpleSort(JsonNode jsonNode) {
-    SimpleSort.SimpleSortBuilder builder = SimpleSort.builder();
-
-    builder.propertyName(jsonNode.get(PROPERTY_NAME).asString());
-
-    if (jsonNode.hasNonNull(DIRECTION)) {
-      builder.direction(SimpleSort.Direction.valueOf(jsonNode.get(DIRECTION).asString()));
+    protected SortDeserializer(JavaType valueType) {
+        super(valueType);
     }
 
-    return builder.build();
-  }
+    @Override
+    public Sort deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws JacksonException {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    private static Sort parseSort(JsonNode jsonNode) {
+        if (isSimpleSort(jsonNode)) {
+            return parseSimpleSort(jsonNode);
+        }
+        throw new IllegalArgumentException("Unknown sort type: " + jsonNode);
+    }
+
+    private static boolean isSimpleSort(JsonNode jsonNode) {
+        return jsonNode.hasNonNull(PROPERTY_NAME);
+    }
+
+    private static SimpleSort parseSimpleSort(JsonNode jsonNode) {
+        SimpleSort.SimpleSortBuilder builder = SimpleSort.builder();
+        builder.propertyName(jsonNode.get(PROPERTY_NAME).asString());
+        if (jsonNode.hasNonNull(DIRECTION)) {
+            builder.direction(SimpleSort.Direction.valueOf(jsonNode.get(DIRECTION).asString()));
+        }
+        return builder.build();
+    }
 }

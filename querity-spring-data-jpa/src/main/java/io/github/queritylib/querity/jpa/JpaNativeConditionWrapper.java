@@ -10,19 +10,20 @@ import lombok.experimental.Delegate;
 import org.springframework.data.jpa.domain.Specification;
 
 class JpaNativeConditionWrapper extends JpaCondition {
-  private final NativeConditionWrapper<Specification<?>> nativeConditionWrapper;
 
-  JpaNativeConditionWrapper(NativeConditionWrapper<Specification<?>> nativeConditionWrapper) {
-    this.nativeConditionWrapper = nativeConditionWrapper;
-  }
+    private final NativeConditionWrapper<Specification<?>> nativeConditionWrapper;
 
-  public Specification<?> getNativeCondition() {
-    return nativeConditionWrapper.getNativeCondition();
-  }
+    JpaNativeConditionWrapper(NativeConditionWrapper<Specification<?>> nativeConditionWrapper) {
+        this.nativeConditionWrapper = nativeConditionWrapper;
+    }
 
-  @Override
-  @SuppressWarnings({"unchecked", "rawtypes"})
-  public <T> Predicate toPredicate(Class<T> entityClass, Metamodel metamodel, Root<T> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
-    return getNativeCondition().toPredicate((Root) root, cq, cb);
-  }
+    public Specification<?> getNativeCondition() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    @Override
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public <T> Predicate toPredicate(Class<T> entityClass, Metamodel metamodel, Root<T> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

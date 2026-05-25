@@ -10,12 +10,13 @@ import lombok.extern.jackson.Jacksonized;
 @EqualsAndHashCode
 @ToString
 public class NotCondition implements Condition {
-  @NonNull
-  @JsonProperty("not")
-  private Condition condition;
 
-  @Override
-  public boolean isEmpty() {
-    return this.condition.isEmpty();
-  }
+    @NonNull
+    @JsonProperty("not")
+    private Condition condition;
+
+    @Override
+    public boolean isEmpty() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

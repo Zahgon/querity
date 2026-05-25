@@ -44,9 +44,7 @@ public class PropertyReference implements PropertyExpression {
      * @return a new PropertyReference
      */
     public static PropertyReference of(String propertyName) {
-        return PropertyReference.builder()
-                .propertyName(propertyName)
-                .build();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -56,10 +54,7 @@ public class PropertyReference implements PropertyExpression {
      * @return a new PropertyReference with the alias set
      */
     public PropertyReference as(String alias) {
-        return PropertyReference.builder()
-                .propertyName(this.propertyName)
-                .alias(alias)
-                .build();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -68,11 +63,11 @@ public class PropertyReference implements PropertyExpression {
      * @return true if an alias is set
      */
     public boolean hasAlias() {
-        return alias != null && !alias.isEmpty();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public String toExpressionString() {
-        return propertyName;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

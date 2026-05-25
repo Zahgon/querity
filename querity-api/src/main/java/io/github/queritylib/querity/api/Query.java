@@ -3,7 +3,6 @@ package io.github.queritylib.querity.api;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.extern.jackson.Jacksonized;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,90 +30,85 @@ import java.util.List;
 @Builder(toBuilder = true)
 @Jacksonized
 @Getter
-@EqualsAndHashCode(of = {"filter", "pagination", "sort", "distinct"})
-@ToString(of = {"filter", "pagination", "sort", "distinct"})
+@EqualsAndHashCode(of = { "filter", "pagination", "sort", "distinct" })
+@ToString(of = { "filter", "pagination", "sort", "distinct" })
 public class Query implements QueryDefinition {
-  private final Condition filter;
-  private final Pagination pagination;
-  @NonNull
-  private final Sort[] sort;
-  @NonNull
-  @JsonIgnore
-  private List<QueryPreprocessor> preprocessors;
-  @NonNull
-  @JsonIgnore
-  private List<QueryCustomizer<?>> customizers;
-  private boolean distinct;
 
-  @Override
-  public boolean hasFilter() {
-    return filter != null && !filter.isEmpty();
-  }
+    private final Condition filter;
 
-  @Override
-  public boolean hasPagination() {
-    return pagination != null;
-  }
+    private final Pagination pagination;
 
-  @Override
-  public boolean hasSort() {
-    return sort.length > 0;
-  }
+    @NonNull
+    private final Sort[] sort;
 
-  @Override
-  public List<Sort> getSort() {
-    return Arrays.asList(sort);
-  }
+    @NonNull
+    @JsonIgnore
+    private List<QueryPreprocessor> preprocessors;
 
-  public static class QueryBuilder {
-    @SuppressWarnings("java:S1068")
-    private Pagination pagination;
-    @SuppressWarnings({"java:S1068", "java:S1450"})
-    private Sort[] sort = new Sort[0];
-    private List<QueryPreprocessor> preprocessors = new ArrayList<>();
-    private List<QueryCustomizer<?>> customizers = new ArrayList<>();
+    @NonNull
+    @JsonIgnore
+    private List<QueryCustomizer<?>> customizers;
 
-    public QueryBuilder withPreprocessor(QueryPreprocessor preprocessor) {
-      if (preprocessor == null) {
-        throw new IllegalArgumentException("Preprocessor cannot be null");
-      }
-      this.preprocessors.add(preprocessor);
-      return this;
+    private boolean distinct;
+
+    @Override
+    public boolean hasFilter() {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
-    public QueryBuilder customize(QueryCustomizer<?>... customizers) {
-      if (customizers == null) {
-        throw new IllegalArgumentException("Customizers cannot be null");
-      }
-      this.customizers.addAll(Arrays.asList(customizers));
-      return this;
+    @Override
+    public boolean hasPagination() {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
-    public QueryBuilder sort(Sort... sort) {
-      this.sort = sort;
-      return this;
+    @Override
+    public boolean hasSort() {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
-    public QueryBuilder pagination(Pagination pagination) {
-      this.pagination = pagination;
-      return this;
+    @Override
+    public List<Sort> getSort() {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
-    public QueryBuilder pagination(Integer page, Integer pageSize) {
-      this.pagination = Querity.paged(page, pageSize);
-      return this;
+    public static class QueryBuilder {
+
+        @SuppressWarnings("java:S1068")
+        private Pagination pagination;
+
+        @SuppressWarnings({ "java:S1068", "java:S1450" })
+        private Sort[] sort = new Sort[0];
+
+        private List<QueryPreprocessor> preprocessors = new ArrayList<>();
+
+        private List<QueryCustomizer<?>> customizers = new ArrayList<>();
+
+        public QueryBuilder withPreprocessor(QueryPreprocessor preprocessor) {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
+
+        public QueryBuilder customize(QueryCustomizer<?>... customizers) {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
+
+        public QueryBuilder sort(Sort... sort) {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
+
+        public QueryBuilder pagination(Pagination pagination) {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
+
+        public QueryBuilder pagination(Integer page, Integer pageSize) {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
+
+        public Query build() {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
     }
 
-    public Query build() {
-      return new Query(filter, pagination, sort, List.copyOf(preprocessors), List.copyOf(customizers), distinct);
+    public Query preprocess() {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-  }
-
-  public Query preprocess() {
-    Query result = this;
-    for (QueryPreprocessor preprocessor : preprocessors) {
-      result = preprocessor.preprocess(result);
-    }
-    return result;
-  }
 }

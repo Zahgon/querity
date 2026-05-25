@@ -6,7 +6,6 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Selection;
 import jakarta.persistence.metamodel.Metamodel;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,34 +16,18 @@ import java.util.List;
  */
 public class JpaSelectionSpecificationSelectWrapper extends JpaNativeSelectWrapper<SelectionSpecification<?>> {
 
-  public JpaSelectionSpecificationSelectWrapper(NativeSelectWrapper<SelectionSpecification<?>> nativeSelectWrapper) {
-    super(nativeSelectWrapper);
-  }
-
-  @Override
-  @SuppressWarnings({"unchecked", "rawtypes"})
-  public List<Selection<?>> toSelections(Metamodel metamodel, Root<?> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
-    List<Selection<?>> selections = new ArrayList<>();
-    for (SelectionSpecification<?> spec : nativeSelectWrapper.getNativeSelections()) {
-      Selection<?> selection = ((SelectionSpecification) spec).toSelection(root, cb);
-      String alias = spec.getAlias();
-      if (alias != null) {
-        selection = selection.alias(alias);
-      }
-      selections.add(selection);
+    public JpaSelectionSpecificationSelectWrapper(NativeSelectWrapper<SelectionSpecification<?>> nativeSelectWrapper) {
+        super(nativeSelectWrapper);
     }
-    return selections;
-  }
 
-  @Override
-  public List<String> getPropertyNames() {
-    List<String> names = new ArrayList<>();
-    for (SelectionSpecification<?> spec : nativeSelectWrapper.getNativeSelections()) {
-      String alias = spec.getAlias();
-      if (alias != null) {
-        names.add(alias);
-      }
+    @Override
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public List<Selection<?>> toSelections(Metamodel metamodel, Root<?> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-    return names;
-  }
+
+    @Override
+    public List<String> getPropertyNames() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

@@ -2,7 +2,6 @@ package io.github.queritylib.querity.api;
 
 import lombok.*;
 import lombok.extern.jackson.Jacksonized;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -12,13 +11,13 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 public class NativeSelectWrapper<T> implements Select {
-  @NonNull
-  @Singular
-  private List<T> nativeSelections;
 
-  @Override
-  public List<String> getPropertyNames() {
-    // Native selects don't have simple property names
-    return Collections.emptyList();
-  }
+    @NonNull
+    @Singular
+    private List<T> nativeSelections;
+
+    @Override
+    public List<String> getPropertyNames() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

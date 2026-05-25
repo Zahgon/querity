@@ -9,15 +9,16 @@ import jakarta.persistence.metamodel.Metamodel;
 import lombok.experimental.Delegate;
 
 class JpaSimpleCondition extends JpaCondition {
-  @Delegate
-  private final SimpleCondition condition;
 
-  JpaSimpleCondition(SimpleCondition condition) {
-    this.condition = condition;
-  }
+    @Delegate
+    private final SimpleCondition condition;
 
-  @Override
-  public <T> Predicate toPredicate(Class<T> entityClass, Metamodel metamodel, Root<T> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
-    return JpaOperatorMapper.getPredicate(entityClass, condition, metamodel, root, cb);
-  }
+    JpaSimpleCondition(SimpleCondition condition) {
+        this.condition = condition;
+    }
+
+    @Override
+    public <T> Predicate toPredicate(Class<T> entityClass, Metamodel metamodel, Root<T> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

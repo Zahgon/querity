@@ -24,64 +24,53 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ElasticsearchFunctionMapper {
 
-  /**
-   * Checks if the given function is supported in Elasticsearch.
-   *
-   * <p>Elasticsearch does NOT support any SQL-like functions natively.
-   * This method always returns false. Consider using script queries
-   * or denormalizing your data at index time for similar functionality.
-   *
-   * @param function the function to check
-   * @return always false, as Elasticsearch does not support functions
-   */
-  @SuppressWarnings("unused")
-  public static boolean isSupported(Function function) {
-    return false;
-  }
-
-  /**
-   * Get the field name from a PropertyExpression.
-   * <p>
-   * Throws {@link UnsupportedOperationException} if the expression contains functions.
-   *
-   * @param expr the property expression
-   * @return the field name for simple property references
-   * @throws UnsupportedOperationException if the expression is a function call
-   */
-  public static String getFieldName(PropertyExpression expr) {
-    if (expr instanceof PropertyReference pr) {
-      return pr.getPropertyName();
-    } else if (expr instanceof FunctionCall fc) {
-      throw new UnsupportedOperationException(
-          "Function " + fc.getFunction() + " is not supported in Elasticsearch. " +
-          "Consider using script queries or denormalizing your data.");
+    /**
+     * Checks if the given function is supported in Elasticsearch.
+     *
+     * <p>Elasticsearch does NOT support any SQL-like functions natively.
+     * This method always returns false. Consider using script queries
+     * or denormalizing your data at index time for similar functionality.
+     *
+     * @param function the function to check
+     * @return always false, as Elasticsearch does not support functions
+     */
+    @SuppressWarnings("unused")
+    public static boolean isSupported(Function function) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-    throw new IllegalArgumentException("Unsupported expression type: " + expr.getClass());
-  }
 
-  /**
-   * Check if an expression contains functions.
-   *
-   * @param expr the property expression
-   * @return true if the expression is a function call
-   */
-  public static boolean containsFunction(PropertyExpression expr) {
-    return expr instanceof FunctionCall;
-  }
-
-  /**
-   * Validate that no function expressions are used.
-   * <p>
-   * Throws {@link UnsupportedOperationException} if any function is detected.
-   *
-   * @param expr the property expression to validate
-   * @throws UnsupportedOperationException if the expression contains functions
-   */
-  public static void validateNoFunctions(PropertyExpression expr) {
-    if (expr instanceof FunctionCall fc) {
-      throw new UnsupportedOperationException(
-          "Function " + fc.getFunction() + " is not supported in Elasticsearch. " +
-          "Consider using script queries or denormalizing your data.");
+    /**
+     * Get the field name from a PropertyExpression.
+     * <p>
+     * Throws {@link UnsupportedOperationException} if the expression contains functions.
+     *
+     * @param expr the property expression
+     * @return the field name for simple property references
+     * @throws UnsupportedOperationException if the expression is a function call
+     */
+    public static String getFieldName(PropertyExpression expr) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-  }
+
+    /**
+     * Check if an expression contains functions.
+     *
+     * @param expr the property expression
+     * @return true if the expression is a function call
+     */
+    public static boolean containsFunction(PropertyExpression expr) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    /**
+     * Validate that no function expressions are used.
+     * <p>
+     * Throws {@link UnsupportedOperationException} if any function is detected.
+     *
+     * @param expr the property expression to validate
+     * @throws UnsupportedOperationException if the expression contains functions
+     */
+    public static void validateNoFunctions(PropertyExpression expr) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

@@ -3,7 +3,6 @@ package io.github.queritylib.querity.api;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.extern.jackson.Jacksonized;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -71,125 +70,102 @@ import java.util.List;
 @ToString
 public class SimpleGroupBy implements GroupBy {
 
-  /**
-   * Simple property names for basic grouping.
-   * <p>Can be combined with {@code expressions}.
-   */
-  @Singular
-  private List<String> propertyNames;
+    /**
+     * Simple property names for basic grouping.
+     * <p>Can be combined with {@code expressions}.
+     */
+    @Singular
+    private List<String> propertyNames;
 
-  /**
-   * Expressions for function-based grouping.
-   * <p>Can be combined with {@code propertyNames}.
-   */
-  @Singular
-  private List<PropertyExpression> expressions;
+    /**
+     * Expressions for function-based grouping.
+     * <p>Can be combined with {@code propertyNames}.
+     */
+    @Singular
+    private List<PropertyExpression> expressions;
 
-  /**
-   * Returns an immutable copy of the property names list.
-   *
-   * @return immutable list of property names, never null
-   */
-  public List<String> getPropertyNames() {
-    return propertyNames == null ? List.of() : List.copyOf(propertyNames);
-  }
-
-  /**
-   * Returns an immutable copy of the expressions list.
-   *
-   * @return immutable list of expressions, never null
-   */
-  public List<PropertyExpression> getExpressions() {
-    return expressions == null ? List.of() : List.copyOf(expressions);
-  }
-
-  /**
-   * Creates a SimpleGroupBy with the given property names.
-   *
-   * @param propertyNames the property names to group by
-   * @return a new SimpleGroupBy
-   */
-  public static SimpleGroupBy of(String... propertyNames) {
-    return SimpleGroupBy.builder()
-        .propertyNames(Arrays.asList(propertyNames))
-        .build();
-  }
-
-  /**
-   * Creates a SimpleGroupBy with the given expressions.
-   *
-   * @param expressions the expressions to group by
-   * @return a new SimpleGroupBy
-   */
-  public static SimpleGroupBy ofExpressions(PropertyExpression... expressions) {
-    return SimpleGroupBy.builder()
-        .expressions(Arrays.asList(expressions))
-        .build();
-  }
-
-  /**
-   * Check if this group by uses expressions.
-   *
-   * @return true if expressions are set
-   */
-  @JsonIgnore
-  public boolean hasExpressions() {
-    return expressions != null && !expressions.isEmpty();
-  }
-
-  /**
-   * Check if this group by uses property names.
-   *
-   * @return true if property names are set
-   */
-  @JsonIgnore
-  public boolean hasPropertyNames() {
-    return propertyNames != null && !propertyNames.isEmpty();
-  }
-
-  /**
-   * Get all grouping criteria as PropertyExpressions.
-   * <p>Combines both propertyNames (converted to PropertyReferences) and expressions
-   * into a single list.
-   *
-   * <p><strong>Ordering:</strong> PropertyNames come first (in their original order),
-   * followed by expressions (in their original order). This ordering is deterministic
-   * but does not preserve interleaved insertion order when mixing the builder methods
-   * {@code propertyName()} and {@code expression()}.
-   *
-   * @return list of PropertyExpression for all grouping criteria
-   */
-  @JsonIgnore
-  public List<PropertyExpression> getEffectiveExpressions() {
-    List<PropertyExpression> result = new ArrayList<>();
-    
-    // Add property names as PropertyReferences
-    if (propertyNames != null) {
-      for (String name : propertyNames) {
-        result.add(PropertyReference.of(name));
-      }
+    /**
+     * Returns an immutable copy of the property names list.
+     *
+     * @return immutable list of property names, never null
+     */
+    public List<String> getPropertyNames() {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-    
-    // Add expressions
-    if (expressions != null) {
-      result.addAll(expressions);
-    }
-    
-    return List.copyOf(result);
-  }
 
-  /**
-   * Custom builder to validate that at least one of propertyNames or expressions is set.
-   */
-  public static class SimpleGroupByBuilder {
-    public SimpleGroupBy build() {
-      boolean hasPropertyNames = propertyNames != null && !propertyNames.isEmpty();
-      boolean hasExpressions = expressions != null && !expressions.isEmpty();
-
-      if (!hasPropertyNames && !hasExpressions) {
-        throw new IllegalArgumentException("Either propertyNames or expressions must be set");
-      }
-      return new SimpleGroupBy(propertyNames, expressions);
+    /**
+     * Returns an immutable copy of the expressions list.
+     *
+     * @return immutable list of expressions, never null
+     */
+    public List<PropertyExpression> getExpressions() {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-  }
+
+    /**
+     * Creates a SimpleGroupBy with the given property names.
+     *
+     * @param propertyNames the property names to group by
+     * @return a new SimpleGroupBy
+     */
+    public static SimpleGroupBy of(String... propertyNames) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    /**
+     * Creates a SimpleGroupBy with the given expressions.
+     *
+     * @param expressions the expressions to group by
+     * @return a new SimpleGroupBy
+     */
+    public static SimpleGroupBy ofExpressions(PropertyExpression... expressions) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    /**
+     * Check if this group by uses expressions.
+     *
+     * @return true if expressions are set
+     */
+    @JsonIgnore
+    public boolean hasExpressions() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    /**
+     * Check if this group by uses property names.
+     *
+     * @return true if property names are set
+     */
+    @JsonIgnore
+    public boolean hasPropertyNames() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    /**
+     * Get all grouping criteria as PropertyExpressions.
+     * <p>Combines both propertyNames (converted to PropertyReferences) and expressions
+     * into a single list.
+     *
+     * <p><strong>Ordering:</strong> PropertyNames come first (in their original order),
+     * followed by expressions (in their original order). This ordering is deterministic
+     * but does not preserve interleaved insertion order when mixing the builder methods
+     * {@code propertyName()} and {@code expression()}.
+     *
+     * @return list of PropertyExpression for all grouping criteria
+     */
+    @JsonIgnore
+    public List<PropertyExpression> getEffectiveExpressions() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    /**
+     * Custom builder to validate that at least one of propertyNames or expressions is set.
+     */
+    public static class SimpleGroupByBuilder {
+
+        public SimpleGroupBy build() {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
+    }
 }

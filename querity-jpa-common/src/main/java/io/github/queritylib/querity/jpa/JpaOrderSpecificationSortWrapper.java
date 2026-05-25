@@ -13,17 +13,17 @@ import lombok.experimental.Delegate;
  * the Root and CriteriaBuilder at query execution time.
  */
 class JpaOrderSpecificationSortWrapper extends JpaSort {
-  @Delegate
-  private final NativeSortWrapper<OrderSpecification<?>> nativeSortWrapper;
 
-  JpaOrderSpecificationSortWrapper(NativeSortWrapper<OrderSpecification<?>> nativeSortWrapper) {
-    this.nativeSortWrapper = nativeSortWrapper;
-  }
+    @Delegate
+    private final NativeSortWrapper<OrderSpecification<?>> nativeSortWrapper;
 
-  @Override
-  @SuppressWarnings({"unchecked", "rawtypes"})
-  public <T> Order toOrder(Metamodel metamodel, Root<T> root, CriteriaBuilder cb) {
-    return getNativeSort().toOrder((Root) root, cb);
-  }
+    JpaOrderSpecificationSortWrapper(NativeSortWrapper<OrderSpecification<?>> nativeSortWrapper) {
+        this.nativeSortWrapper = nativeSortWrapper;
+    }
+
+    @Override
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public <T> Order toOrder(Metamodel metamodel, Root<T> root, CriteriaBuilder cb) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }
-

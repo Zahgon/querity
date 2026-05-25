@@ -3,7 +3,6 @@ package io.github.queritylib.querity.api;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.extern.jackson.Jacksonized;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -67,165 +66,128 @@ import java.util.List;
 @ToString
 public class SimpleSelect implements Select {
 
-  /**
-   * Simple property names for basic projections.
-   * <p>Can be combined with {@code expressions}.
-   */
-  @Singular
-  private List<String> propertyNames;
+    /**
+     * Simple property names for basic projections.
+     * <p>Can be combined with {@code expressions}.
+     */
+    @Singular
+    private List<String> propertyNames;
 
-  /**
-   * Expressions for function-based projections.
-   * <p>Can be combined with {@code propertyNames}.
-   */
-  @Singular
-  private List<PropertyExpression> expressions;
+    /**
+     * Expressions for function-based projections.
+     * <p>Can be combined with {@code propertyNames}.
+     */
+    @Singular
+    private List<PropertyExpression> expressions;
 
-  /**
-   * Returns an immutable copy of the property names list.
-   *
-   * @return immutable list of property names, never null
-   */
-  public List<String> getPropertyNames() {
-    return propertyNames == null ? List.of() : List.copyOf(propertyNames);
-  }
-
-  /**
-   * Returns an immutable copy of the expressions list.
-   *
-   * @return immutable list of expressions, never null
-   */
-  public List<PropertyExpression> getExpressions() {
-    return expressions == null ? List.of() : List.copyOf(expressions);
-  }
-
-  /**
-   * Creates a SimpleSelect with the given property names.
-   *
-   * @param propertyNames the property names to select
-   * @return a new SimpleSelect
-   */
-  public static SimpleSelect of(String... propertyNames) {
-    return SimpleSelect.builder()
-        .propertyNames(Arrays.asList(propertyNames))
-        .build();
-  }
-
-  /**
-   * Creates a SimpleSelect with the given expressions.
-   *
-   * @param expressions the expressions to select
-   * @return a new SimpleSelect
-   */
-  public static SimpleSelect ofExpressions(PropertyExpression... expressions) {
-    return SimpleSelect.builder()
-        .expressions(Arrays.asList(expressions))
-        .build();
-  }
-
-  /**
-   * Check if this select uses expressions.
-   *
-   * @return true if expressions are set
-   */
-  @JsonIgnore
-  public boolean hasExpressions() {
-    return expressions != null && !expressions.isEmpty();
-  }
-
-  /**
-   * Check if this select uses property names.
-   *
-   * @return true if property names are set
-   */
-  @JsonIgnore
-  public boolean hasPropertyNames() {
-    return propertyNames != null && !propertyNames.isEmpty();
-  }
-
-  /**
-   * Get all selections as PropertyExpressions.
-   * <p>Combines both propertyNames (converted to PropertyReferences) and expressions
-   * into a single list.
-   *
-   * <p><strong>Ordering:</strong> PropertyNames come first (in their original order),
-   * followed by expressions (in their original order). This ordering is deterministic
-   * but does not preserve interleaved insertion order when mixing the builder methods
-   * {@code propertyName()} and {@code expression()}.
-   *
-   * @return list of PropertyExpression for all selections
-   */
-  @JsonIgnore
-  public List<PropertyExpression> getEffectiveExpressions() {
-    List<PropertyExpression> result = new ArrayList<>();
-    
-    // Add property names as PropertyReferences
-    if (propertyNames != null) {
-      for (String name : propertyNames) {
-        result.add(PropertyReference.of(name));
-      }
+    /**
+     * Returns an immutable copy of the property names list.
+     *
+     * @return immutable list of property names, never null
+     */
+    public List<String> getPropertyNames() {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-    
-    // Add expressions
-    if (expressions != null) {
-      result.addAll(expressions);
-    }
-    
-    return List.copyOf(result);
-  }
 
-  /**
-   * Get the alias names for all selections.
-   * <p>For expressions with aliases, returns the alias. For property names or
-   * expressions without aliases, returns the property name or a generated name.
-   *
-   * @return list of alias names
-   */
-  @JsonIgnore
-  public List<String> getAliasNames() {
-    List<String> result = new ArrayList<>();
-    
-    // Add property names directly as aliases
-    if (propertyNames != null) {
-      result.addAll(propertyNames);
+    /**
+     * Returns an immutable copy of the expressions list.
+     *
+     * @return immutable list of expressions, never null
+     */
+    public List<PropertyExpression> getExpressions() {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-    
-    // Add expression aliases
-    if (expressions != null) {
-      for (PropertyExpression expr : expressions) {
-        result.add(getExpressionAlias(expr));
-      }
-    }
-    
-    return List.copyOf(result);
-  }
 
-  private String getExpressionAlias(PropertyExpression expr) {
-    if (expr instanceof FunctionCall fc && fc.hasAlias()) {
-      return fc.getAlias();
+    /**
+     * Creates a SimpleSelect with the given property names.
+     *
+     * @param propertyNames the property names to select
+     * @return a new SimpleSelect
+     */
+    public static SimpleSelect of(String... propertyNames) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-    if (expr instanceof PropertyReference pr) {
-      if (pr.hasAlias()) {
-        return pr.getAlias();
-      }
-      return pr.getPropertyName();
-    }
-    // For function calls without alias, generate a name
-    return expr.toExpressionString().replaceAll("[^a-zA-Z0-9]", "_");
-  }
 
-  /**
-   * Custom builder to validate that at least one of propertyNames or expressions is set.
-   */
-  public static class SimpleSelectBuilder {
-    public SimpleSelect build() {
-      boolean hasPropertyNames = propertyNames != null && !propertyNames.isEmpty();
-      boolean hasExpressions = expressions != null && !expressions.isEmpty();
-
-      if (!hasPropertyNames && !hasExpressions) {
-        throw new IllegalArgumentException("Either propertyNames or expressions must be set");
-      }
-      return new SimpleSelect(propertyNames, expressions);
+    /**
+     * Creates a SimpleSelect with the given expressions.
+     *
+     * @param expressions the expressions to select
+     * @return a new SimpleSelect
+     */
+    public static SimpleSelect ofExpressions(PropertyExpression... expressions) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-  }
+
+    /**
+     * Check if this select uses expressions.
+     *
+     * @return true if expressions are set
+     */
+    @JsonIgnore
+    public boolean hasExpressions() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    /**
+     * Check if this select uses property names.
+     *
+     * @return true if property names are set
+     */
+    @JsonIgnore
+    public boolean hasPropertyNames() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    /**
+     * Get all selections as PropertyExpressions.
+     * <p>Combines both propertyNames (converted to PropertyReferences) and expressions
+     * into a single list.
+     *
+     * <p><strong>Ordering:</strong> PropertyNames come first (in their original order),
+     * followed by expressions (in their original order). This ordering is deterministic
+     * but does not preserve interleaved insertion order when mixing the builder methods
+     * {@code propertyName()} and {@code expression()}.
+     *
+     * @return list of PropertyExpression for all selections
+     */
+    @JsonIgnore
+    public List<PropertyExpression> getEffectiveExpressions() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    /**
+     * Get the alias names for all selections.
+     * <p>For expressions with aliases, returns the alias. For property names or
+     * expressions without aliases, returns the property name or a generated name.
+     *
+     * @return list of alias names
+     */
+    @JsonIgnore
+    public List<String> getAliasNames() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    private String getExpressionAlias(PropertyExpression expr) {
+        if (expr instanceof FunctionCall fc && fc.hasAlias()) {
+            return fc.getAlias();
+        }
+        if (expr instanceof PropertyReference pr) {
+            if (pr.hasAlias()) {
+                return pr.getAlias();
+            }
+            return pr.getPropertyName();
+        }
+        // For function calls without alias, generate a name
+        return expr.toExpressionString().replaceAll("[^a-zA-Z0-9]", "_");
+    }
+
+    /**
+     * Custom builder to validate that at least one of propertyNames or expressions is set.
+     */
+    public static class SimpleSelectBuilder {
+
+        public SimpleSelect build() {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
+    }
 }

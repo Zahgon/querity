@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
-
 import java.util.List;
 
 /**
@@ -17,57 +16,42 @@ import java.util.List;
  */
 @Slf4j
 public class MongodbQueryFactory<T> {
-  private final Class<T> entityClass;
-  private final Query query;
 
-  MongodbQueryFactory(Class<T> entityClass, Query query) {
-    this.entityClass = entityClass;
-    this.query = query;
-  }
+    private final Class<T> entityClass;
 
-  org.springframework.data.mongodb.core.query.Query getMongodbQuery() {
-    if (query != null && query.isDistinct()) {
-      log.debug("Distinct queries are not supported in MongoDB, ignoring the distinct flag");
+    private final Query query;
+
+    MongodbQueryFactory(Class<T> entityClass, Query query) {
+        this.entityClass = entityClass;
+        this.query = query;
     }
-    org.springframework.data.mongodb.core.query.Query q = initMongodbQuery();
-    q = applyPaginationAndSorting(q);
-    return q;
-  }
 
-  private org.springframework.data.mongodb.core.query.Query initMongodbQuery() {
-    return query == null || !query.hasFilter() ?
-        new org.springframework.data.mongodb.core.query.Query() :
-        new org.springframework.data.mongodb.core.query.Query(getMongodbCriteria());
-  }
+    org.springframework.data.mongodb.core.query.Query getMongodbQuery() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 
-  private Criteria getMongodbCriteria() {
-    return MongodbCondition.of(query.getFilter()).toCriteria(entityClass);
-  }
+    private org.springframework.data.mongodb.core.query.Query initMongodbQuery() {
+        return query == null || !query.hasFilter() ? new org.springframework.data.mongodb.core.query.Query() : new org.springframework.data.mongodb.core.query.Query(getMongodbCriteria());
+    }
 
-  private org.springframework.data.mongodb.core.query.Query applyPaginationAndSorting(org.springframework.data.mongodb.core.query.Query q) {
-    return query != null && query.hasPagination() ?
-        q.with(getMongodbPageRequest()) :
-        q.with(getMongodbSort());
-  }
+    private Criteria getMongodbCriteria() {
+        return MongodbCondition.of(query.getFilter()).toCriteria(entityClass);
+    }
 
-  private PageRequest getMongodbPageRequest() {
-    Pagination pagination = query.getPagination();
-    return PageRequest.of(
-        pagination.getPage() - 1,
-        pagination.getPageSize(),
-        getMongodbSort());
-  }
+    private org.springframework.data.mongodb.core.query.Query applyPaginationAndSorting(org.springframework.data.mongodb.core.query.Query q) {
+        return query != null && query.hasPagination() ? q.with(getMongodbPageRequest()) : q.with(getMongodbSort());
+    }
 
-  private org.springframework.data.domain.Sort getMongodbSort() {
-    return query == null || !query.hasSort() ?
-        org.springframework.data.domain.Sort.unsorted() :
-        org.springframework.data.domain.Sort.by(getMongoDbSortOrder());
-  }
+    private PageRequest getMongodbPageRequest() {
+        Pagination pagination = query.getPagination();
+        return PageRequest.of(pagination.getPage() - 1, pagination.getPageSize(), getMongodbSort());
+    }
 
-  private List<Sort.Order> getMongoDbSortOrder() {
-    return query.getSort().stream()
-        .map(MongodbSort::of)
-        .map(MongodbSort::toMongoSortOrder)
-        .toList();
-  }
+    private org.springframework.data.domain.Sort getMongodbSort() {
+        return query == null || !query.hasSort() ? org.springframework.data.domain.Sort.unsorted() : org.springframework.data.domain.Sort.by(getMongoDbSortOrder());
+    }
+
+    private List<Sort.Order> getMongoDbSortOrder() {
+        return query.getSort().stream().map(MongodbSort::of).map(MongodbSort::toMongoSortOrder).toList();
+    }
 }

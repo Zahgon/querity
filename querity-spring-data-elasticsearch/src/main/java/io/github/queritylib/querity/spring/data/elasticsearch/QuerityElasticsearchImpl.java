@@ -10,7 +10,6 @@ import org.springframework.data.elasticsearch.UncategorizedElasticsearchExceptio
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
-
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,69 +17,48 @@ import java.util.Map;
 @Slf4j
 public class QuerityElasticsearchImpl implements Querity {
 
-  private final ElasticsearchOperations elasticsearchOperations;
+    private final ElasticsearchOperations elasticsearchOperations;
 
-  public QuerityElasticsearchImpl(ElasticsearchOperations elasticsearchOperations) {
-    this.elasticsearchOperations = elasticsearchOperations;
-  }
-
-  @Override
-  public <T> List<T> findAll(Class<T> entityClass, Query query) {
-    org.springframework.data.elasticsearch.core.query.Query q = getElasticsearchQuery(entityClass, query);
-    try {
-      SearchHits<T> hits = elasticsearchOperations.search(q, entityClass);
-      return hits.stream().map(SearchHit::getContent).toList();
-    } catch (UncategorizedElasticsearchException e) {
-      log.error(((ElasticsearchException) e.getCause()).response().error().rootCause().get(0).reason());
-      throw e;
+    public QuerityElasticsearchImpl(ElasticsearchOperations elasticsearchOperations) {
+        this.elasticsearchOperations = elasticsearchOperations;
     }
-  }
 
-  @Override
-  public <T> Long count(Class<T> entityClass, Condition condition) {
-    Query query = Querity.wrapConditionInQuery(condition);
-    org.springframework.data.elasticsearch.core.query.Query q = getElasticsearchQuery(entityClass, query);
-    return elasticsearchOperations.count(q, entityClass);
-  }
-
-  @Override
-  @SuppressWarnings("unchecked")
-  public List<Map<String, Object>> findAllProjected(Class<?> entityClass, AdvancedQuery query) {
-    org.springframework.data.elasticsearch.core.query.Query q = getElasticsearchAdvancedQueryFactory(entityClass, query).getElasticsearchProjectedQuery();
-    Class<Map<String, Object>> mapClass = (Class<Map<String, Object>>) (Class<?>) Map.class;
-    try {
-      SearchHits<Map<String, Object>> hits =
-          elasticsearchOperations.search(q, mapClass, elasticsearchOperations.getIndexCoordinatesFor(entityClass));
-      return hits.stream()
-          .map(SearchHit::getContent)
-          .map(this::sanitizeMap)
-          .toList();
-    } catch (UncategorizedElasticsearchException e) {
-      log.error(((ElasticsearchException) e.getCause()).response().error().rootCause().get(0).reason());
-      throw e;
+    @Override
+    public <T> List<T> findAll(Class<T> entityClass, Query query) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-  }
 
-  @SuppressWarnings("unchecked")
-  private Map<String, Object> sanitizeMap(Map<?, ?> source) {
-    Map<String, Object> result = new LinkedHashMap<>();
-    source.forEach((key, value) -> {
-      if (key instanceof String strKey && !"_class".equals(strKey)) {
-        result.put(strKey, value);
-      }
-    });
-    return result;
-  }
+    @Override
+    public <T> Long count(Class<T> entityClass, Condition condition) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 
-  private <T> org.springframework.data.elasticsearch.core.query.Query getElasticsearchQuery(Class<T> entityClass, Query query) {
-    return getElasticsearchQueryFactory(entityClass, query).getElasticsearchQuery();
-  }
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Map<String, Object>> findAllProjected(Class<?> entityClass, AdvancedQuery query) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 
-  protected static <T> ElasticsearchQueryFactory<T> getElasticsearchQueryFactory(Class<T> entityClass, Query query) {
-    return new ElasticsearchQueryFactory<>(entityClass, query);
-  }
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> sanitizeMap(Map<?, ?> source) {
+        Map<String, Object> result = new LinkedHashMap<>();
+        source.forEach((key, value) -> {
+            if (key instanceof String strKey && !"_class".equals(strKey)) {
+                result.put(strKey, value);
+            }
+        });
+        return result;
+    }
 
-  protected static <T> ElasticsearchAdvancedQueryFactory<T> getElasticsearchAdvancedQueryFactory(Class<T> entityClass, AdvancedQuery query) {
-    return new ElasticsearchAdvancedQueryFactory<>(entityClass, query);
-  }
+    private <T> org.springframework.data.elasticsearch.core.query.Query getElasticsearchQuery(Class<T> entityClass, Query query) {
+        return getElasticsearchQueryFactory(entityClass, query).getElasticsearchQuery();
+    }
+
+    protected static <T> ElasticsearchQueryFactory<T> getElasticsearchQueryFactory(Class<T> entityClass, Query query) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    protected static <T> ElasticsearchAdvancedQueryFactory<T> getElasticsearchAdvancedQueryFactory(Class<T> entityClass, AdvancedQuery query) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

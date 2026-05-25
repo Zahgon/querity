@@ -6,17 +6,10 @@ import io.github.queritylib.querity.api.Sort;
 
 abstract class MongodbSort {
 
-  public abstract org.springframework.data.domain.Sort.Order toMongoSortOrder();
+    public abstract org.springframework.data.domain.Sort.Order toMongoSortOrder();
 
-  @SuppressWarnings("unchecked")
-  public static MongodbSort of(Sort sort) {
-    if (sort instanceof SimpleSort simpleSort) {
-      return new MongodbSimpleSort(simpleSort);
-    } else if (sort instanceof NativeSortWrapper) {
-      return new MongodbNativeSortWrapper((NativeSortWrapper<org.springframework.data.domain.Sort.Order>) sort);
+    @SuppressWarnings("unchecked")
+    public static MongodbSort of(Sort sort) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-    throw new IllegalArgumentException(
-        String.format("Sort class %s is not supported by the MongoDB module", sort.getClass().getSimpleName()));
-  }
 }
-

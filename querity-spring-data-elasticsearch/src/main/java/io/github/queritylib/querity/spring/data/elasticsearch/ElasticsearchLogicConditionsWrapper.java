@@ -6,29 +6,20 @@ import lombok.experimental.Delegate;
 import org.springframework.data.elasticsearch.core.query.Criteria;
 
 abstract class ElasticsearchLogicConditionsWrapper extends ElasticsearchCondition {
-  @Delegate
-  private final LogicConditionsWrapper conditionsWrapper;
 
-  protected ElasticsearchLogicConditionsWrapper(LogicConditionsWrapper conditionsWrapper) {
-    this.conditionsWrapper = conditionsWrapper;
-  }
+    @Delegate
+    private final LogicConditionsWrapper conditionsWrapper;
 
-  @Override
-  public <T> Criteria toCriteria(Class<T> entityClass, boolean negate) {
-    Criteria[] conditionsCriteria = buildConditionsCriteria(entityClass, negate);
-    Criteria criteria = getLogic().equals(LogicOperator.AND) ^ negate ? // xor
-        Criteria.and() :
-        Criteria.or();
-    for (Criteria condition : conditionsCriteria) {
-      criteria = criteria.subCriteria(condition);
+    protected ElasticsearchLogicConditionsWrapper(LogicConditionsWrapper conditionsWrapper) {
+        this.conditionsWrapper = conditionsWrapper;
     }
-    return criteria;
-  }
 
-  private <T> Criteria[] buildConditionsCriteria(Class<T> entityClass, boolean negate) {
-    return getConditions().stream()
-        .map(ElasticsearchCondition::of)
-        .map(c -> c.toCriteria(entityClass, negate))
-        .toArray(Criteria[]::new);
-  }
+    @Override
+    public <T> Criteria toCriteria(Class<T> entityClass, boolean negate) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    private <T> Criteria[] buildConditionsCriteria(Class<T> entityClass, boolean negate) {
+        return getConditions().stream().map(ElasticsearchCondition::of).map(c -> c.toCriteria(entityClass, negate)).toArray(Criteria[]::new);
+    }
 }

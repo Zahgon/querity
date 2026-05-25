@@ -5,15 +5,16 @@ import lombok.experimental.Delegate;
 import org.springframework.data.mongodb.core.query.Criteria;
 
 class MongodbNotCondition extends MongodbCondition {
-  @Delegate
-  private final NotCondition notCondition;
 
-  public MongodbNotCondition(NotCondition notCondition) {
-    this.notCondition = notCondition;
-  }
+    @Delegate
+    private final NotCondition notCondition;
 
-  @Override
-  public <T> Criteria toCriteria(Class<T> entityClass, boolean negate) {
-    return MongodbCondition.of(getCondition()).toCriteria(entityClass, !negate);
-  }
+    public MongodbNotCondition(NotCondition notCondition) {
+        this.notCondition = notCondition;
+    }
+
+    @Override
+    public <T> Criteria toCriteria(Class<T> entityClass, boolean negate) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

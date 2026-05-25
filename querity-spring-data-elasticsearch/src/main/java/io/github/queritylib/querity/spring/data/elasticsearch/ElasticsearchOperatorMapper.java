@@ -8,120 +8,106 @@ import io.github.queritylib.querity.common.util.PropertyUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.data.elasticsearch.core.query.Criteria;
-
 import java.util.EnumMap;
 import java.util.Map;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 class ElasticsearchOperatorMapper {
-  static final Map<Operator, ElasticSearchOperatorCriteriaProvider> OPERATOR_CRITERIA_MAP = new EnumMap<>(Operator.class);
 
-  static {
-    OPERATOR_CRITERIA_MAP.put(Operator.EQUALS, ElasticsearchOperatorMapper::getEquals);
-    OPERATOR_CRITERIA_MAP.put(Operator.NOT_EQUALS, (where, value, negate) -> getEquals(where, value, !negate));
-    OPERATOR_CRITERIA_MAP.put(Operator.STARTS_WITH, ElasticsearchOperatorMapper::getStartsWith);
-    OPERATOR_CRITERIA_MAP.put(Operator.ENDS_WITH, ElasticsearchOperatorMapper::getEndsWith);
-    OPERATOR_CRITERIA_MAP.put(Operator.CONTAINS, ElasticsearchOperatorMapper::getContains);
-    OPERATOR_CRITERIA_MAP.put(Operator.GREATER_THAN, ElasticsearchOperatorMapper::getGreaterThan);
-    OPERATOR_CRITERIA_MAP.put(Operator.GREATER_THAN_EQUALS, ElasticsearchOperatorMapper::getGreaterThanEquals);
-    OPERATOR_CRITERIA_MAP.put(Operator.LESSER_THAN, ElasticsearchOperatorMapper::getLesserThan);
-    OPERATOR_CRITERIA_MAP.put(Operator.LESSER_THAN_EQUALS, ElasticsearchOperatorMapper::getLesserThanEquals);
-    OPERATOR_CRITERIA_MAP.put(Operator.IS_NULL, (where, value, negate) -> getIsNull(where, negate));
-    OPERATOR_CRITERIA_MAP.put(Operator.IS_NOT_NULL, (where, value, negate) -> getIsNull(where, !negate));
-    OPERATOR_CRITERIA_MAP.put(Operator.IN, ElasticsearchOperatorMapper::getIn);
-    OPERATOR_CRITERIA_MAP.put(Operator.NOT_IN, ElasticsearchOperatorMapper::getNotIn);
-  }
+    static final Map<Operator, ElasticSearchOperatorCriteriaProvider> OPERATOR_CRITERIA_MAP = new EnumMap<>(Operator.class);
 
-  private static Criteria getIsNull(Criteria where, boolean negate) {
-    return !negate ? where.not().exists() : where.exists();
-  }
-
-  private static Criteria getEquals(Criteria where, Object value, boolean negate) {
-    return negate ? getNotEquals(where, value) : getEquals(where, value);
-  }
-
-  private static Criteria getEquals(Criteria where, Object value) {
-    return where.is(value);
-  }
-
-  private static Criteria getNotEquals(Criteria where, Object value) {
-    return where.not().is(value);
-  }
-
-  private static Criteria getStartsWith(Criteria where, Object value, boolean negate) {
-    return negate ? where.not().startsWith(value.toString()) : where.startsWith(value.toString());
-  }
-
-  private static Criteria getEndsWith(Criteria where, Object value, boolean negate) {
-    return negate ? where.not().endsWith(value.toString()) : where.endsWith(value.toString());
-  }
-
-  private static Criteria getContains(Criteria where, Object value, boolean negate) {
-    return negate ? where.not().contains(value.toString()) : where.contains(value.toString());
-  }
-
-  private static Criteria getGreaterThan(Criteria where, Object value, boolean negate) {
-    return negate ? where.lessThanEqual(value) : where.greaterThan(value);
-  }
-
-  private static Criteria getGreaterThanEquals(Criteria where, Object value, boolean negate) {
-    return negate ? where.lessThan(value) : where.greaterThanEqual(value);
-  }
-
-  private static Criteria getLesserThan(Criteria where, Object value, boolean negate) {
-    return negate ? where.greaterThanEqual(value) : where.lessThan(value);
-  }
-
-  private static Criteria getLesserThanEquals(Criteria where, Object value, boolean negate) {
-    return negate ? where.greaterThan(value) : where.lessThanEqual(value);
-  }
-
-  private static Criteria getIn(Criteria where, Object value, boolean negate) {
-    if (value.getClass().isArray()) {
-      return negate ? where.not().in((Object[]) value) : where.in((Object[]) value);
-    } else {
-      throw new IllegalArgumentException("Value must be an array");
-    }
-  }
-
-  private static Criteria getNotIn(Criteria where, Object value, boolean negate) {
-    if (value.getClass().isArray()) {
-      return negate ? where.in((Object[]) value) : where.not().in((Object[]) value);
-    } else {
-      throw new IllegalArgumentException("Value must be an array");
-    }
-  }
-
-  @FunctionalInterface
-  private interface ElasticSearchOperatorCriteriaProvider {
-    Criteria getCriteria(Criteria where, Object value, boolean negate);
-  }
-
-  public static <T> Criteria getCriteria(Class<T> entityClass, SimpleCondition condition, boolean negate) {
-    // Check for function expressions
-    if (condition.hasLeftExpression()) {
-      PropertyExpression leftExpr = condition.getLeftExpression();
-      ElasticsearchFunctionMapper.validateNoFunctions(leftExpr);
-      // If it's just a PropertyReference, continue with normal processing
-      if (leftExpr instanceof PropertyReference pr) {
-        return getCriteriaForProperty(entityClass, pr.getPropertyName(), condition, negate);
-      }
+    static {
+        OPERATOR_CRITERIA_MAP.put(Operator.EQUALS, ElasticsearchOperatorMapper::getEquals);
+        OPERATOR_CRITERIA_MAP.put(Operator.NOT_EQUALS, (where, value, negate) -> getEquals(where, value, !negate));
+        OPERATOR_CRITERIA_MAP.put(Operator.STARTS_WITH, ElasticsearchOperatorMapper::getStartsWith);
+        OPERATOR_CRITERIA_MAP.put(Operator.ENDS_WITH, ElasticsearchOperatorMapper::getEndsWith);
+        OPERATOR_CRITERIA_MAP.put(Operator.CONTAINS, ElasticsearchOperatorMapper::getContains);
+        OPERATOR_CRITERIA_MAP.put(Operator.GREATER_THAN, ElasticsearchOperatorMapper::getGreaterThan);
+        OPERATOR_CRITERIA_MAP.put(Operator.GREATER_THAN_EQUALS, ElasticsearchOperatorMapper::getGreaterThanEquals);
+        OPERATOR_CRITERIA_MAP.put(Operator.LESSER_THAN, ElasticsearchOperatorMapper::getLesserThan);
+        OPERATOR_CRITERIA_MAP.put(Operator.LESSER_THAN_EQUALS, ElasticsearchOperatorMapper::getLesserThanEquals);
+        OPERATOR_CRITERIA_MAP.put(Operator.IS_NULL, (where, value, negate) -> getIsNull(where, negate));
+        OPERATOR_CRITERIA_MAP.put(Operator.IS_NOT_NULL, (where, value, negate) -> getIsNull(where, !negate));
+        OPERATOR_CRITERIA_MAP.put(Operator.IN, ElasticsearchOperatorMapper::getIn);
+        OPERATOR_CRITERIA_MAP.put(Operator.NOT_IN, ElasticsearchOperatorMapper::getNotIn);
     }
 
-    String propertyPath = condition.getPropertyName();
-    return getCriteriaForProperty(entityClass, propertyPath, condition, negate);
-  }
-
-  private static <T> Criteria getCriteriaForProperty(Class<T> entityClass, String propertyPath, SimpleCondition condition, boolean negate) {
-    if (condition.isFieldReference()) {
-      throw new UnsupportedOperationException(
-          "Field-to-field comparison is not supported in Elasticsearch. " +
-          "Consider using script queries or denormalizing your data.");
+    private static Criteria getIsNull(Criteria where, boolean negate) {
+        return !negate ? where.not().exists() : where.exists();
     }
 
-    Criteria where = Criteria.where(propertyPath);
-    Object value = PropertyUtils.getActualPropertyValue(entityClass, propertyPath, condition.getValue());
-    return OPERATOR_CRITERIA_MAP.get(condition.getOperator())
-        .getCriteria(where, value, negate);
-  }
+    private static Criteria getEquals(Criteria where, Object value, boolean negate) {
+        return negate ? getNotEquals(where, value) : getEquals(where, value);
+    }
+
+    private static Criteria getEquals(Criteria where, Object value) {
+        return where.is(value);
+    }
+
+    private static Criteria getNotEquals(Criteria where, Object value) {
+        return where.not().is(value);
+    }
+
+    private static Criteria getStartsWith(Criteria where, Object value, boolean negate) {
+        return negate ? where.not().startsWith(value.toString()) : where.startsWith(value.toString());
+    }
+
+    private static Criteria getEndsWith(Criteria where, Object value, boolean negate) {
+        return negate ? where.not().endsWith(value.toString()) : where.endsWith(value.toString());
+    }
+
+    private static Criteria getContains(Criteria where, Object value, boolean negate) {
+        return negate ? where.not().contains(value.toString()) : where.contains(value.toString());
+    }
+
+    private static Criteria getGreaterThan(Criteria where, Object value, boolean negate) {
+        return negate ? where.lessThanEqual(value) : where.greaterThan(value);
+    }
+
+    private static Criteria getGreaterThanEquals(Criteria where, Object value, boolean negate) {
+        return negate ? where.lessThan(value) : where.greaterThanEqual(value);
+    }
+
+    private static Criteria getLesserThan(Criteria where, Object value, boolean negate) {
+        return negate ? where.greaterThanEqual(value) : where.lessThan(value);
+    }
+
+    private static Criteria getLesserThanEquals(Criteria where, Object value, boolean negate) {
+        return negate ? where.greaterThan(value) : where.lessThanEqual(value);
+    }
+
+    private static Criteria getIn(Criteria where, Object value, boolean negate) {
+        if (value.getClass().isArray()) {
+            return negate ? where.not().in((Object[]) value) : where.in((Object[]) value);
+        } else {
+            throw new IllegalArgumentException("Value must be an array");
+        }
+    }
+
+    private static Criteria getNotIn(Criteria where, Object value, boolean negate) {
+        if (value.getClass().isArray()) {
+            return negate ? where.in((Object[]) value) : where.not().in((Object[]) value);
+        } else {
+            throw new IllegalArgumentException("Value must be an array");
+        }
+    }
+
+    @FunctionalInterface
+    private interface ElasticSearchOperatorCriteriaProvider {
+
+        Criteria getCriteria(Criteria where, Object value, boolean negate);
+    }
+
+    public static <T> Criteria getCriteria(Class<T> entityClass, SimpleCondition condition, boolean negate) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    private static <T> Criteria getCriteriaForProperty(Class<T> entityClass, String propertyPath, SimpleCondition condition, boolean negate) {
+        if (condition.isFieldReference()) {
+            throw new UnsupportedOperationException("Field-to-field comparison is not supported in Elasticsearch. " + "Consider using script queries or denormalizing your data.");
+        }
+        Criteria where = Criteria.where(propertyPath);
+        Object value = PropertyUtils.getActualPropertyValue(entityClass, propertyPath, condition.getValue());
+        return OPERATOR_CRITERIA_MAP.get(condition.getOperator()).getCriteria(where, value, negate);
+    }
 }

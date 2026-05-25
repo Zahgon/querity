@@ -4,18 +4,19 @@ import tools.jackson.core.Version;
 import tools.jackson.databind.JacksonModule;
 
 public class QuerityModule extends JacksonModule {
-  @Override
-  public String getModuleName() {
-    return getClass().getSimpleName();
-  }
 
-  @Override
-  public Version version() {
-    return Version.unknownVersion();
-  }
+    @Override
+    public String getModuleName() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 
-  @Override
-  public void setupModule(SetupContext setupContext) {
-    setupContext.addDeserializers(new QuerityDeserializers());
-  }
+    @Override
+    public Version version() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    @Override
+    public void setupModule(SetupContext setupContext) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

@@ -4,17 +4,16 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-
 import jakarta.annotation.Nullable;
 import java.util.Objects;
 
 @FunctionalInterface
 public interface Specification<T> {
-  @Nullable
-  Predicate toPredicate(Root<T> root, CriteriaQuery<?> cq, CriteriaBuilder cb);
 
-  static <T> Specification<T> where(@Nullable Specification<T> spec) {
-    return Objects.requireNonNullElseGet(spec,
-        () -> (root, cq, cb) -> null);
-  }
+    @Nullable
+    Predicate toPredicate(Root<T> root, CriteriaQuery<?> cq, CriteriaBuilder cb);
+
+    static <T> Specification<T> where(@Nullable Specification<T> spec) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

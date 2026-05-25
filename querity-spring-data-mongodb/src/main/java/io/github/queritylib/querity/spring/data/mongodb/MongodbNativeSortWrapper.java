@@ -4,16 +4,16 @@ import io.github.queritylib.querity.api.NativeSortWrapper;
 import lombok.experimental.Delegate;
 
 class MongodbNativeSortWrapper extends MongodbSort {
-  @Delegate
-  private final NativeSortWrapper<org.springframework.data.domain.Sort.Order> nativeSortWrapper;
 
-  MongodbNativeSortWrapper(NativeSortWrapper<org.springframework.data.domain.Sort.Order> nativeSortWrapper) {
-    this.nativeSortWrapper = nativeSortWrapper;
-  }
+    @Delegate
+    private final NativeSortWrapper<org.springframework.data.domain.Sort.Order> nativeSortWrapper;
 
-  @Override
-  public org.springframework.data.domain.Sort.Order toMongoSortOrder() {
-    return getNativeSort();
-  }
+    MongodbNativeSortWrapper(NativeSortWrapper<org.springframework.data.domain.Sort.Order> nativeSortWrapper) {
+        this.nativeSortWrapper = nativeSortWrapper;
+    }
+
+    @Override
+    public org.springframework.data.domain.Sort.Order toMongoSortOrder() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }
-

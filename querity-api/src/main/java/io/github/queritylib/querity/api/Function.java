@@ -30,69 +30,59 @@ public enum Function {
      * <p>Usage: {@code ABS(amount)} or {@code ABS(-5)}
      */
     ABS(1, FunctionCategory.ARITHMETIC),
-
     /**
      * Square root. Returns the square root of a numeric argument.
      * <p>Usage: {@code SQRT(value)}
      */
     SQRT(1, FunctionCategory.ARITHMETIC),
-
     /**
      * Modulo. Returns the remainder of division.
      * <p>Usage: {@code MOD(dividend, divisor)}
      */
     MOD(2, FunctionCategory.ARITHMETIC),
-
     // String functions
     /**
      * Concatenation. Joins two or more strings together.
      * <p>Usage: {@code CONCAT(firstName, lastName)} or {@code CONCAT(a, b, c, ...)}
      */
-    CONCAT(-1, FunctionCategory.STRING),  // -1 = variadic (2+ arguments)
-
+    // -1 = variadic (2+ arguments)
+    CONCAT(-1, FunctionCategory.STRING),
     /**
      * Substring extraction. Extracts a portion of a string.
      * <p>Usage: {@code SUBSTRING(str, start, length)}
      * <p>Note: start is 1-based in most SQL implementations.
      */
     SUBSTRING(3, FunctionCategory.STRING),
-
     /**
      * Trim whitespace. Removes leading and trailing whitespace from a string.
      * <p>Usage: {@code TRIM(str)}
      */
     TRIM(1, FunctionCategory.STRING),
-
     /**
      * Left trim. Removes leading whitespace from a string.
      * <p>Usage: {@code LTRIM(str)}
      */
     LTRIM(1, FunctionCategory.STRING),
-
     /**
      * Right trim. Removes trailing whitespace from a string.
      * <p>Usage: {@code RTRIM(str)}
      */
     RTRIM(1, FunctionCategory.STRING),
-
     /**
      * Lowercase conversion. Converts a string to lowercase.
      * <p>Usage: {@code LOWER(str)}
      */
     LOWER(1, FunctionCategory.STRING),
-
     /**
      * Uppercase conversion. Converts a string to uppercase.
      * <p>Usage: {@code UPPER(str)}
      */
     UPPER(1, FunctionCategory.STRING),
-
     /**
      * String length. Returns the length of a string.
      * <p>Usage: {@code LENGTH(str)}
      */
     LENGTH(1, FunctionCategory.STRING),
-
     /**
      * Locate substring. Returns the position of a substring within a string.
      * <p>Usage: {@code LOCATE(search, str)}
@@ -104,39 +94,34 @@ public enum Function {
      * automatically by the JPA mapper.
      */
     LOCATE(2, FunctionCategory.STRING),
-
     // Date/Time functions
     /**
      * Current date. Returns the current date (without time component).
      * <p>Usage: {@code CURRENT_DATE}
      */
     CURRENT_DATE(0, FunctionCategory.DATE_TIME),
-
     /**
      * Current time. Returns the current time (without date component).
      * <p>Usage: {@code CURRENT_TIME}
      */
     CURRENT_TIME(0, FunctionCategory.DATE_TIME),
-
     /**
      * Current timestamp. Returns the current date and time.
      * <p>Usage: {@code CURRENT_TIMESTAMP}
      */
     CURRENT_TIMESTAMP(0, FunctionCategory.DATE_TIME),
-
     // Logical/Conditional functions
     /**
      * Coalesce. Returns the first non-null argument.
      * <p>Usage: {@code COALESCE(value1, value2, ...)}
      */
-    COALESCE(-1, FunctionCategory.CONDITIONAL),  // -1 = variadic (1+ arguments)
-
+    // -1 = variadic (1+ arguments)
+    COALESCE(-1, FunctionCategory.CONDITIONAL),
     /**
      * Null if equal. Returns null if the two arguments are equal, otherwise returns the first argument.
      * <p>Usage: {@code NULLIF(value1, value2)}
      */
     NULLIF(2, FunctionCategory.CONDITIONAL),
-
     // Aggregate functions
     /**
      * Count. Counts the number of non-null values.
@@ -144,28 +129,24 @@ public enum Function {
      * <p><b>Note:</b> Aggregate functions can only be used in projections.
      */
     COUNT(1, FunctionCategory.AGGREGATE),
-
     /**
      * Sum. Returns the sum of numeric values.
      * <p>Usage: {@code SUM(amount)}
      * <p><b>Note:</b> Aggregate functions can only be used in projections.
      */
     SUM(1, FunctionCategory.AGGREGATE),
-
     /**
      * Average. Returns the average of numeric values.
      * <p>Usage: {@code AVG(amount)}
      * <p><b>Note:</b> Aggregate functions can only be used in projections.
      */
     AVG(1, FunctionCategory.AGGREGATE),
-
     /**
      * Minimum. Returns the minimum value.
      * <p>Usage: {@code MIN(amount)}
      * <p><b>Note:</b> Aggregate functions can only be used in projections.
      */
     MIN(1, FunctionCategory.AGGREGATE),
-
     /**
      * Maximum. Returns the maximum value.
      * <p>Usage: {@code MAX(amount)}
@@ -195,7 +176,7 @@ public enum Function {
      * @return true if this is an aggregate function
      */
     public boolean isAggregate() {
-        return category == FunctionCategory.AGGREGATE;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -204,7 +185,7 @@ public enum Function {
      * @return true if this function is variadic
      */
     public boolean isVariadic() {
-        return argumentCount == -1;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -213,7 +194,7 @@ public enum Function {
      * @return true if this function takes no arguments
      */
     public boolean isNullary() {
-        return argumentCount == 0;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -224,21 +205,14 @@ public enum Function {
      * @return the minimum number of arguments required
      */
     public int getMinimumArguments() {
-        if (!isVariadic()) {
-            return argumentCount;
-        }
-        // Variadic functions: CONCAT needs at least 2, others need at least 1
-        return this == CONCAT ? 2 : 1;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
      * Categories of functions.
      */
     public enum FunctionCategory {
-        ARITHMETIC,
-        STRING,
-        DATE_TIME,
-        CONDITIONAL,
-        AGGREGATE
+
+        ARITHMETIC, STRING, DATE_TIME, CONDITIONAL, AGGREGATE
     }
 }

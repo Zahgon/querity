@@ -11,33 +11,34 @@ import jakarta.persistence.criteria.Selection;
  */
 public class AliasedSelectionSpecification<T> implements SelectionSpecification<T> {
 
-  private final SelectionSpecification<T> delegate;
-  private final String alias;
+    private final SelectionSpecification<T> delegate;
 
-  private AliasedSelectionSpecification(SelectionSpecification<T> delegate, String alias) {
-    this.delegate = delegate;
-    this.alias = alias;
-  }
+    private final String alias;
 
-  /**
-   * Creates an aliased selection specification.
-   *
-   * @param delegate the underlying selection specification
-   * @param alias    the alias for the selection
-   * @param <T>      the entity type
-   * @return an aliased selection specification
-   */
-  public static <T> AliasedSelectionSpecification<T> of(SelectionSpecification<T> delegate, String alias) {
-    return new AliasedSelectionSpecification<>(delegate, alias);
-  }
+    private AliasedSelectionSpecification(SelectionSpecification<T> delegate, String alias) {
+        this.delegate = delegate;
+        this.alias = alias;
+    }
 
-  @Override
-  public Selection<?> toSelection(Root<T> root, CriteriaBuilder cb) {
-    return delegate.toSelection(root, cb);
-  }
+    /**
+     * Creates an aliased selection specification.
+     *
+     * @param delegate the underlying selection specification
+     * @param alias    the alias for the selection
+     * @param <T>      the entity type
+     * @return an aliased selection specification
+     */
+    public static <T> AliasedSelectionSpecification<T> of(SelectionSpecification<T> delegate, String alias) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 
-  @Override
-  public String getAlias() {
-    return alias;
-  }
+    @Override
+    public Selection<?> toSelection(Root<T> root, CriteriaBuilder cb) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    @Override
+    public String getAlias() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

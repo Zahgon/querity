@@ -13,25 +13,28 @@ import jakarta.persistence.TypedQuery;
  * @param <T> the entity type
  */
 public class JpaQueryContext<T> {
-  private final EntityManager entityManager;
-  private final Class<T> entityClass;
-  private final TypedQuery<?> typedQuery;
 
-  public JpaQueryContext(EntityManager entityManager, Class<T> entityClass, TypedQuery<?> typedQuery) {
-    this.entityManager = entityManager;
-    this.entityClass = entityClass;
-    this.typedQuery = typedQuery;
-  }
+    private final EntityManager entityManager;
 
-  public EntityManager getEntityManager() {
-    return entityManager;
-  }
+    private final Class<T> entityClass;
 
-  public Class<T> getEntityClass() {
-    return entityClass;
-  }
+    private final TypedQuery<?> typedQuery;
 
-  public TypedQuery<?> getTypedQuery() {
-    return typedQuery;
-  }
+    public JpaQueryContext(EntityManager entityManager, Class<T> entityClass, TypedQuery<?> typedQuery) {
+        this.entityManager = entityManager;
+        this.entityClass = entityClass;
+        this.typedQuery = typedQuery;
+    }
+
+    public EntityManager getEntityManager() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    public Class<T> getEntityClass() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    public TypedQuery<?> getTypedQuery() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

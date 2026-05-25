@@ -3,7 +3,6 @@ package io.github.queritylib.querity.api;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.extern.jackson.Jacksonized;
-
 import java.util.Set;
 
 /**
@@ -60,102 +59,91 @@ import java.util.Set;
 @ToString
 public class SimpleCondition implements Condition {
 
-  private static final Set<Operator> FIELD_REFERENCE_UNSUPPORTED_OPERATORS = Set.of(
-      Operator.STARTS_WITH,
-      Operator.ENDS_WITH,
-      Operator.CONTAINS,
-      Operator.IS_NULL,
-      Operator.IS_NOT_NULL,
-      Operator.IN,
-      Operator.NOT_IN
-  );
+    private static final Set<Operator> FIELD_REFERENCE_UNSUPPORTED_OPERATORS = Set.of(Operator.STARTS_WITH, Operator.ENDS_WITH, Operator.CONTAINS, Operator.IS_NULL, Operator.IS_NOT_NULL, Operator.IN, Operator.NOT_IN);
 
-  /**
-   * The property name for simple property-based conditions.
-   * Either this or {@code leftExpression} must be set, but not both.
-   */
-  private final String propertyName;
+    /**
+     * The property name for simple property-based conditions.
+     * Either this or {@code leftExpression} must be set, but not both.
+     */
+    private final String propertyName;
 
-  /**
-   * The left-side expression for function-based conditions.
-   * Either this or {@code propertyName} must be set, but not both.
-   */
-  private final PropertyExpression leftExpression;
+    /**
+     * The left-side expression for function-based conditions.
+     * Either this or {@code propertyName} must be set, but not both.
+     */
+    private final PropertyExpression leftExpression;
 
-  @NonNull
-  private Operator operator = Operator.EQUALS;
-  private final Object value;
+    @NonNull
+    private Operator operator = Operator.EQUALS;
 
-  @Builder(toBuilder = true)
-  @Jacksonized
-  public SimpleCondition(String propertyName, PropertyExpression leftExpression, Operator operator, Object value) {
-    // Validate that exactly one of propertyName or leftExpression is set
-    if (propertyName == null && leftExpression == null) {
-      throw new IllegalArgumentException("Either propertyName or leftExpression must be set");
+    private final Object value;
+
+    @Builder(toBuilder = true)
+    @Jacksonized
+    public SimpleCondition(String propertyName, PropertyExpression leftExpression, Operator operator, Object value) {
+        // Validate that exactly one of propertyName or leftExpression is set
+        if (propertyName == null && leftExpression == null) {
+            throw new IllegalArgumentException("Either propertyName or leftExpression must be set");
+        }
+        if (propertyName != null && leftExpression != null) {
+            throw new IllegalArgumentException("Cannot set both propertyName and leftExpression");
+        }
+        this.propertyName = propertyName;
+        this.leftExpression = leftExpression;
+        if (operator != null)
+            this.operator = operator;
+        this.value = value;
+        validate(this.operator, this.value);
     }
-    if (propertyName != null && leftExpression != null) {
-      throw new IllegalArgumentException("Cannot set both propertyName and leftExpression");
+
+    /**
+     * Check if this condition uses a function expression on the left side.
+     *
+     * @return true if this condition has a left expression
+     */
+    @JsonIgnore
+    public boolean hasLeftExpression() {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
-    this.propertyName = propertyName;
-    this.leftExpression = leftExpression;
-    if (operator != null)
-      this.operator = operator;
-    this.value = value;
-    validate(this.operator, this.value);
-  }
+    /**
+     * Get the effective left-side expression.
+     * <p>If a leftExpression is set, returns it. Otherwise, wraps the propertyName
+     * in a PropertyReference.
+     *
+     * @return the left-side expression for this condition
+     */
+    @JsonIgnore
+    public PropertyExpression getEffectiveLeftExpression() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 
-  /**
-   * Check if this condition uses a function expression on the left side.
-   *
-   * @return true if this condition has a left expression
-   */
-  @JsonIgnore
-  public boolean hasLeftExpression() {
-    return leftExpression != null;
-  }
+    /**
+     * Check if the value is a reference to another field.
+     *
+     * @return true if this condition compares against another field
+     */
+    public boolean isFieldReference() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 
-  /**
-   * Get the effective left-side expression.
-   * <p>If a leftExpression is set, returns it. Otherwise, wraps the propertyName
-   * in a PropertyReference.
-   *
-   * @return the left-side expression for this condition
-   */
-  @JsonIgnore
-  public PropertyExpression getEffectiveLeftExpression() {
-    return leftExpression != null ? leftExpression : PropertyReference.of(propertyName);
-  }
+    /**
+     * Get the value as a FieldReference.
+     *
+     * @return the FieldReference, or null if the value is not a field reference
+     */
+    public FieldReference getFieldReference() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 
-  /**
-   * Check if the value is a reference to another field.
-   *
-   * @return true if this condition compares against another field
-   */
-  public boolean isFieldReference() {
-    return value instanceof FieldReference;
-  }
+    private void validate(Operator operator, Object value) {
+        if (operator.getRequiredValuesCount() != getValuesCount(value))
+            throw new IllegalArgumentException(String.format("The operator %s requires %d value(s)", operator, operator.getRequiredValuesCount()));
+        if (value instanceof FieldReference && FIELD_REFERENCE_UNSUPPORTED_OPERATORS.contains(operator))
+            throw new IllegalArgumentException(String.format("The operator %s does not support field-to-field comparison", operator));
+    }
 
-  /**
-   * Get the value as a FieldReference.
-   *
-   * @return the FieldReference, or null if the value is not a field reference
-   */
-  public FieldReference getFieldReference() {
-    return isFieldReference() ? (FieldReference) value : null;
-  }
-
-  private void validate(Operator operator, Object value) {
-    if (operator.getRequiredValuesCount() != getValuesCount(value))
-      throw new IllegalArgumentException(
-          String.format("The operator %s requires %d value(s)", operator, operator.getRequiredValuesCount()));
-
-    if (value instanceof FieldReference && FIELD_REFERENCE_UNSUPPORTED_OPERATORS.contains(operator))
-      throw new IllegalArgumentException(
-          String.format("The operator %s does not support field-to-field comparison", operator));
-  }
-
-  private int getValuesCount(Object value) {
-    return value == null ? 0 : 1;
-  }
+    private int getValuesCount(Object value) {
+        return value == null ? 0 : 1;
+    }
 }

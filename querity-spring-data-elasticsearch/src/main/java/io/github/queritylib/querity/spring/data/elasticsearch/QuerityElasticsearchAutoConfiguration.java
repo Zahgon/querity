@@ -9,8 +9,9 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 @AutoConfiguration
 @ConditionalOnProperty(prefix = "querity.autoconfigure", name = "enabled", matchIfMissing = true)
 public class QuerityElasticsearchAutoConfiguration {
-  @Bean
-  public Querity querity(ElasticsearchOperations elasticsearchOperations) {
-    return new QuerityElasticsearchImpl(elasticsearchOperations);
-  }
+
+    @Bean
+    public Querity querity(ElasticsearchOperations elasticsearchOperations) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

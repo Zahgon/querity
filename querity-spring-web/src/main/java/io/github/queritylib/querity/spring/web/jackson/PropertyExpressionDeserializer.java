@@ -9,7 +9,6 @@ import tools.jackson.databind.DeserializationContext;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.deser.std.StdDeserializer;
-
 import static io.github.queritylib.querity.spring.web.jackson.JsonFields.FUNCTION;
 import static io.github.queritylib.querity.spring.web.jackson.JsonFields.PROPERTY_NAME;
 
@@ -24,24 +23,22 @@ import static io.github.queritylib.querity.spring.web.jackson.JsonFields.PROPERT
  */
 public class PropertyExpressionDeserializer extends StdDeserializer<PropertyExpression> {
 
-  protected PropertyExpressionDeserializer(JavaType valueType) {
-    super(valueType);
-  }
-
-  @Override
-  public PropertyExpression deserialize(JsonParser jsonParser, DeserializationContext context) throws JacksonException {
-    JsonNode root = jsonParser.readValueAsTree();
-    return parsePropertyExpression(root, context);
-  }
-
-  private static PropertyExpression parsePropertyExpression(JsonNode jsonNode, DeserializationContext context) {
-    if (jsonNode.hasNonNull(FUNCTION)) {
-      return context.readTreeAsValue(jsonNode, FunctionCall.class);
+    protected PropertyExpressionDeserializer(JavaType valueType) {
+        super(valueType);
     }
-    if (jsonNode.hasNonNull(PROPERTY_NAME)) {
-      return context.readTreeAsValue(jsonNode, PropertyReference.class);
+
+    @Override
+    public PropertyExpression deserialize(JsonParser jsonParser, DeserializationContext context) throws JacksonException {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-    throw new IllegalArgumentException("Unknown PropertyExpression type: " + jsonNode +
-        ". Expected either 'propertyName' (for PropertyReference) or 'function' (for FunctionCall)");
-  }
+
+    private static PropertyExpression parsePropertyExpression(JsonNode jsonNode, DeserializationContext context) {
+        if (jsonNode.hasNonNull(FUNCTION)) {
+            return context.readTreeAsValue(jsonNode, FunctionCall.class);
+        }
+        if (jsonNode.hasNonNull(PROPERTY_NAME)) {
+            return context.readTreeAsValue(jsonNode, PropertyReference.class);
+        }
+        throw new IllegalArgumentException("Unknown PropertyExpression type: " + jsonNode + ". Expected either 'propertyName' (for PropertyReference) or 'function' (for FunctionCall)");
+    }
 }

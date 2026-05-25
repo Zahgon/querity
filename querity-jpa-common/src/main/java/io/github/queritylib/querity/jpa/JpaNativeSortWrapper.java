@@ -8,16 +8,16 @@ import jakarta.persistence.metamodel.Metamodel;
 import lombok.experimental.Delegate;
 
 class JpaNativeSortWrapper extends JpaSort {
-  @Delegate
-  private final NativeSortWrapper<Order> nativeSortWrapper;
 
-  JpaNativeSortWrapper(NativeSortWrapper<Order> nativeSortWrapper) {
-    this.nativeSortWrapper = nativeSortWrapper;
-  }
+    @Delegate
+    private final NativeSortWrapper<Order> nativeSortWrapper;
 
-  @Override
-  public <T> Order toOrder(Metamodel metamodel, Root<T> root, CriteriaBuilder cb) {
-    return getNativeSort();
-  }
+    JpaNativeSortWrapper(NativeSortWrapper<Order> nativeSortWrapper) {
+        this.nativeSortWrapper = nativeSortWrapper;
+    }
+
+    @Override
+    public <T> Order toOrder(Metamodel metamodel, Root<T> root, CriteriaBuilder cb) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }
-

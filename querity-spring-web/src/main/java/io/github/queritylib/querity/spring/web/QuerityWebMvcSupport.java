@@ -15,21 +15,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 
 public class QuerityWebMvcSupport extends WebMvcConfigurationSupport {
 
-  private final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
-  public QuerityWebMvcSupport(ObjectMapper objectMapper) {
-    this.objectMapper = objectMapper;
-  }
+    public QuerityWebMvcSupport(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
-  @Override
-  @NonNull
-  protected ConfigurableWebBindingInitializer getConfigurableWebBindingInitializer(@NonNull FormattingConversionService mvcConversionService, @NonNull Validator mvcValidator) {
-    ConfigurableWebBindingInitializer initializer = super.getConfigurableWebBindingInitializer(mvcConversionService, mvcValidator);
-    initializer.setPropertyEditorRegistrar(propertyEditorRegistry -> {
-      propertyEditorRegistry.registerCustomEditor(Query.class, new QueryJsonPropertyEditor(objectMapper));
-      propertyEditorRegistry.registerCustomEditor(AdvancedQuery.class, new AdvancedQueryJsonPropertyEditor(objectMapper));
-      propertyEditorRegistry.registerCustomEditor(Condition.class, new ConditionJsonPropertyEditor(objectMapper));
-    });
-    return initializer;
-  }
+    @Override
+    @NonNull
+    protected ConfigurableWebBindingInitializer getConfigurableWebBindingInitializer(@NonNull FormattingConversionService mvcConversionService, @NonNull Validator mvcValidator) {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
 }

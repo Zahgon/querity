@@ -6,12 +6,9 @@ import org.springframework.data.mongodb.core.query.Field;
 
 abstract class MongodbSelect {
 
-  public abstract void applyProjection(Field field);
+    public abstract void applyProjection(Field field);
 
-  public static MongodbSelect of(Select select) {
-    if (select instanceof SimpleSelect simpleSelect) {
-      return new MongodbSimpleSelect(simpleSelect);
+    public static MongodbSelect of(Select select) {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-    throw new IllegalArgumentException("Unsupported select type: " + select.getClass().getSimpleName());
-  }
 }

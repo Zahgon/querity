@@ -41,60 +41,54 @@ import lombok.extern.jackson.Jacksonized;
 @ToString
 public class SimpleSort implements Sort {
 
-  /**
-   * The property name for simple property-based sorting.
-   * Either this or {@code expression} must be set, but not both.
-   */
-  private String propertyName;
+    /**
+     * The property name for simple property-based sorting.
+     * Either this or {@code expression} must be set, but not both.
+     */
+    private String propertyName;
 
-  /**
-   * The expression for function-based sorting.
-   * Either this or {@code propertyName} must be set, but not both.
-   */
-  private PropertyExpression expression;
+    /**
+     * The expression for function-based sorting.
+     * Either this or {@code propertyName} must be set, but not both.
+     */
+    private PropertyExpression expression;
 
-  @Builder.Default
-  @NonNull
-  private Direction direction = Direction.ASC;
+    @Builder.Default
+    @NonNull
+    private Direction direction = Direction.ASC;
 
-  /**
-   * Check if this sort uses a function expression.
-   *
-   * @return true if this sort has an expression
-   */
-  @JsonIgnore
-  public boolean hasExpression() {
-    return expression != null;
-  }
-
-  /**
-   * Get the effective expression for this sort.
-   * <p>If an expression is set, returns it. Otherwise, wraps the propertyName
-   * in a PropertyReference.
-   *
-   * @return the expression for this sort
-   */
-  @JsonIgnore
-  public PropertyExpression getEffectiveExpression() {
-    return expression != null ? expression : PropertyReference.of(propertyName);
-  }
-
-  public enum Direction {
-    ASC, DESC
-  }
-
-  // Custom builder to validate that exactly one of propertyName or expression is set
-  public static class SimpleSortBuilder {
-    public SimpleSort build() {
-      if (propertyName == null && expression == null) {
-        throw new IllegalArgumentException("Either propertyName or expression must be set");
-      }
-      if (propertyName != null && expression != null) {
-        throw new IllegalArgumentException("Cannot set both propertyName and expression");
-      }
-      // Handle the default value for direction when not explicitly set
-      Direction effectiveDirection = direction$value != null ? direction$value : Direction.ASC;
-      return new SimpleSort(propertyName, expression, effectiveDirection);
+    /**
+     * Check if this sort uses a function expression.
+     *
+     * @return true if this sort has an expression
+     */
+    @JsonIgnore
+    public boolean hasExpression() {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-  }
+
+    /**
+     * Get the effective expression for this sort.
+     * <p>If an expression is set, returns it. Otherwise, wraps the propertyName
+     * in a PropertyReference.
+     *
+     * @return the expression for this sort
+     */
+    @JsonIgnore
+    public PropertyExpression getEffectiveExpression() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    public enum Direction {
+
+        ASC, DESC
+    }
+
+    // Custom builder to validate that exactly one of propertyName or expression is set
+    public static class SimpleSortBuilder {
+
+        public SimpleSort build() {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
+    }
 }

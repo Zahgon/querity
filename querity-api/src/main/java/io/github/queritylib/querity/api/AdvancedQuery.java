@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.*;
 import lombok.extern.jackson.Jacksonized;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -45,217 +44,207 @@ import java.util.List;
 @Builder(toBuilder = true)
 @Jacksonized
 @Getter
-@EqualsAndHashCode(of = {"filter", "pagination", "sort", "distinct", "select", "groupBy", "having"})
-@ToString(of = {"filter", "pagination", "sort", "distinct", "select", "groupBy", "having"})
+@EqualsAndHashCode(of = { "filter", "pagination", "sort", "distinct", "select", "groupBy", "having" })
+@ToString(of = { "filter", "pagination", "sort", "distinct", "select", "groupBy", "having" })
 public class AdvancedQuery implements QueryDefinition {
-  private final Condition filter;
-  private final Pagination pagination;
-  @NonNull
-  private final Sort[] sort;
-  private boolean distinct;
-  private final Select select;
-  @Setter(AccessLevel.NONE)
-  private final GroupBy groupBy;
-  private final Condition having;
-  @NonNull
-  @JsonIgnore
-  private List<AdvancedQueryPreprocessor> preprocessors;
-  @NonNull
-  @JsonIgnore
-  private List<QueryCustomizer<?>> customizers;
 
-  @Override
-  public boolean hasFilter() {
-    return filter != null && !filter.isEmpty();
-  }
+    private final Condition filter;
 
-  @Override
-  public boolean hasPagination() {
-    return pagination != null;
-  }
+    private final Pagination pagination;
 
-  @Override
-  public boolean hasSort() {
-    return sort.length > 0;
-  }
+    @NonNull
+    private final Sort[] sort;
 
-  public boolean hasSelect() {
-    return select != null;
-  }
+    private boolean distinct;
 
-  public boolean hasGroupBy() {
-    return groupBy != null;
-  }
+    private final Select select;
 
-  public boolean hasHaving() {
-    return having != null && !having.isEmpty();
-  }
+    @Setter(AccessLevel.NONE)
+    private final GroupBy groupBy;
 
-  @Override
-  public List<Sort> getSort() {
-    return Arrays.asList(sort);
-  }
+    private final Condition having;
 
-  /**
-   * Apply all registered preprocessors to this query.
-   *
-   * @return the preprocessed query
-   */
-  public AdvancedQuery preprocess() {
-    AdvancedQuery result = this;
-    for (AdvancedQueryPreprocessor preprocessor : preprocessors) {
-      result = preprocessor.preprocess(result);
-    }
-    return result;
-  }
-
-  public static class AdvancedQueryBuilder {
-    @SuppressWarnings("java:S1068")
-    private Pagination pagination;
-    @SuppressWarnings({"java:S1068", "java:S1450"})
-    private Sort[] sort = new Sort[0];
-    @SuppressWarnings("java:S1068")
-    private Select select;
-    @SuppressWarnings("java:S1068")
-    private GroupBy groupBy;
-    @SuppressWarnings("java:S1068")
-    private Condition having;
-    private List<AdvancedQueryPreprocessor> preprocessors = new ArrayList<>();
-    private List<QueryCustomizer<?>> customizers = new ArrayList<>();
-
-    /**
-     * Adds a preprocessor to be applied when {@link AdvancedQuery#preprocess()} is called.
-     *
-     * @param preprocessor the preprocessor to add
-     * @return this builder
-     * @throws IllegalArgumentException if preprocessor is null
-     */
-    public AdvancedQueryBuilder withPreprocessor(AdvancedQueryPreprocessor preprocessor) {
-      if (preprocessor == null) {
-        throw new IllegalArgumentException("Preprocessor cannot be null");
-      }
-      this.preprocessors.add(preprocessor);
-      return this;
-    }
-
-    public AdvancedQueryBuilder customize(QueryCustomizer<?>... customizers) {
-      if (customizers == null) {
-        throw new IllegalArgumentException("Customizers cannot be null");
-      }
-      this.customizers.addAll(Arrays.asList(customizers));
-      return this;
-    }
-
-    public AdvancedQueryBuilder sort(Sort... sort) {
-      this.sort = sort;
-      return this;
-    }
-
-    public AdvancedQueryBuilder pagination(Pagination pagination) {
-      this.pagination = pagination;
-      return this;
-    }
-
-    public AdvancedQueryBuilder pagination(Integer page, Integer pageSize) {
-      this.pagination = Querity.paged(page, pageSize);
-      return this;
-    }
-
-    @JsonSetter("select")
-    public AdvancedQueryBuilder select(Select select) {
-      this.select = select;
-      return this;
-    }
-
-    public AdvancedQueryBuilder selectBy(String... propertyNames) {
-      this.select = Querity.selectBy(propertyNames);
-      return this;
-    }
-
-    /**
-     * Sets the SELECT clause using expressions.
-     * <p>Use this method for function-based projections:
-     * <pre>{@code
-     * advancedQuery()
-     *     .select(prop("category"), sum(prop("amount")).as("total"))
-     *     .build();
-     * }</pre>
-     *
-     * @param expressions the expressions to select
-     * @return this builder
-     */
+    @NonNull
     @JsonIgnore
-    public AdvancedQueryBuilder select(PropertyExpression... expressions) {
-      this.select = Querity.selectBy(expressions);
-      return this;
-    }
+    private List<AdvancedQueryPreprocessor> preprocessors;
 
-    /**
-     * Sets the GROUP BY clause directly using a GroupBy object.
-     * <p>This method is typically used internally or for deserialization.
-     * For fluent API usage, prefer {@link #groupBy(String...)} or {@link #groupByExpressions(PropertyExpression...)}.
-     *
-     * @param groupBy the GroupBy clause
-     * @return this builder
-     */
-    @JsonSetter("groupBy")
-    public AdvancedQueryBuilder groupBy(GroupBy groupBy) {
-      this.groupBy = groupBy;
-      return this;
-    }
-
-    /**
-     * Sets the GROUP BY clause using property names.
-     * <p>This is the simplest and most concise way to group by columns:
-     * <pre>{@code
-     * advancedQuery().groupBy("category", "region").build();
-     * }</pre>
-     *
-     * @param propertyNames the property names to group by
-     * @return this builder
-     * @see #groupByExpressions(PropertyExpression...) for function-based grouping
-     */
+    @NonNull
     @JsonIgnore
-    public AdvancedQueryBuilder groupBy(String... propertyNames) {
-      this.groupBy = Querity.groupBy(propertyNames);
-      return this;
+    private List<QueryCustomizer<?>> customizers;
+
+    @Override
+    public boolean hasFilter() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    @Override
+    public boolean hasPagination() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    @Override
+    public boolean hasSort() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    public boolean hasSelect() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    public boolean hasGroupBy() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    public boolean hasHaving() {
+        throw new UnsupportedOperationException("STUB: not implemented");
+    }
+
+    @Override
+    public List<Sort> getSort() {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
-     * Sets the GROUP BY clause using expressions.
-     * <p>Use this method when you need function-based grouping:
-     * <pre>{@code
-     * advancedQuery()
-     *     .groupByExpressions(upper(prop("category")), lower(prop("region")))
-     *     .build();
-     * }</pre>
+     * Apply all registered preprocessors to this query.
      *
-     * @param expressions the expressions to group by
-     * @return this builder
-     * @see #groupBy(String...) for simple property-based grouping
+     * @return the preprocessed query
      */
-    public AdvancedQueryBuilder groupByExpressions(PropertyExpression... expressions) {
-      this.groupBy = Querity.groupBy(expressions);
-      return this;
+    public AdvancedQuery preprocess() {
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
-    public AdvancedQueryBuilder having(Condition having) {
-      this.having = having;
-      return this;
-    }
+    public static class AdvancedQueryBuilder {
 
-    /**
-     * Builds the query with semantic validation.
-     *
-     * @return the built AdvancedQuery
-     * @throws IllegalStateException if HAVING is specified without GROUP BY
-     */
-    public AdvancedQuery build() {
-      // Semantic validation: HAVING requires GROUP BY
-      if (having != null && !having.isEmpty() && groupBy == null) {
-        throw new IllegalStateException("HAVING clause requires a GROUP BY clause");
-      }
-      return new AdvancedQuery(filter, pagination, sort, distinct, select, groupBy, having, List.copyOf(preprocessors), List.copyOf(customizers));
+        @SuppressWarnings("java:S1068")
+        private Pagination pagination;
+
+        @SuppressWarnings({ "java:S1068", "java:S1450" })
+        private Sort[] sort = new Sort[0];
+
+        @SuppressWarnings("java:S1068")
+        private Select select;
+
+        @SuppressWarnings("java:S1068")
+        private GroupBy groupBy;
+
+        @SuppressWarnings("java:S1068")
+        private Condition having;
+
+        private List<AdvancedQueryPreprocessor> preprocessors = new ArrayList<>();
+
+        private List<QueryCustomizer<?>> customizers = new ArrayList<>();
+
+        /**
+         * Adds a preprocessor to be applied when {@link AdvancedQuery#preprocess()} is called.
+         *
+         * @param preprocessor the preprocessor to add
+         * @return this builder
+         * @throws IllegalArgumentException if preprocessor is null
+         */
+        public AdvancedQueryBuilder withPreprocessor(AdvancedQueryPreprocessor preprocessor) {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
+
+        public AdvancedQueryBuilder customize(QueryCustomizer<?>... customizers) {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
+
+        public AdvancedQueryBuilder sort(Sort... sort) {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
+
+        public AdvancedQueryBuilder pagination(Pagination pagination) {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
+
+        public AdvancedQueryBuilder pagination(Integer page, Integer pageSize) {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
+
+        @JsonSetter("select")
+        public AdvancedQueryBuilder select(Select select) {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
+
+        public AdvancedQueryBuilder selectBy(String... propertyNames) {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
+
+        /**
+         * Sets the SELECT clause using expressions.
+         * <p>Use this method for function-based projections:
+         * <pre>{@code
+         * advancedQuery()
+         *     .select(prop("category"), sum(prop("amount")).as("total"))
+         *     .build();
+         * }</pre>
+         *
+         * @param expressions the expressions to select
+         * @return this builder
+         */
+        @JsonIgnore
+        public AdvancedQueryBuilder select(PropertyExpression... expressions) {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
+
+        /**
+         * Sets the GROUP BY clause directly using a GroupBy object.
+         * <p>This method is typically used internally or for deserialization.
+         * For fluent API usage, prefer {@link #groupBy(String...)} or {@link #groupByExpressions(PropertyExpression...)}.
+         *
+         * @param groupBy the GroupBy clause
+         * @return this builder
+         */
+        @JsonSetter("groupBy")
+        public AdvancedQueryBuilder groupBy(GroupBy groupBy) {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
+
+        /**
+         * Sets the GROUP BY clause using property names.
+         * <p>This is the simplest and most concise way to group by columns:
+         * <pre>{@code
+         * advancedQuery().groupBy("category", "region").build();
+         * }</pre>
+         *
+         * @param propertyNames the property names to group by
+         * @return this builder
+         * @see #groupByExpressions(PropertyExpression...) for function-based grouping
+         */
+        @JsonIgnore
+        public AdvancedQueryBuilder groupBy(String... propertyNames) {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
+
+        /**
+         * Sets the GROUP BY clause using expressions.
+         * <p>Use this method when you need function-based grouping:
+         * <pre>{@code
+         * advancedQuery()
+         *     .groupByExpressions(upper(prop("category")), lower(prop("region")))
+         *     .build();
+         * }</pre>
+         *
+         * @param expressions the expressions to group by
+         * @return this builder
+         * @see #groupBy(String...) for simple property-based grouping
+         */
+        public AdvancedQueryBuilder groupByExpressions(PropertyExpression... expressions) {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
+
+        public AdvancedQueryBuilder having(Condition having) {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
+
+        /**
+         * Builds the query with semantic validation.
+         *
+         * @return the built AdvancedQuery
+         * @throws IllegalStateException if HAVING is specified without GROUP BY
+         */
+        public AdvancedQuery build() {
+            throw new UnsupportedOperationException("STUB: not implemented");
+        }
     }
-  }
 }
